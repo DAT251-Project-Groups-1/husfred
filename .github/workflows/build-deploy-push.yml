@@ -3,16 +3,14 @@ on:
   push:
     branches:
       - main
-      
-defaults:
-  run:
-    working-directory: frontend
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Change directory
+      - run: cd frontend
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
@@ -23,7 +21,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: dist
-          path: dist
+          path: frontend/dist
   deploy:
     name: Deploy
     needs: build
@@ -35,7 +33,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: dist
-          path: dist
+          path: frontend/dist
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
