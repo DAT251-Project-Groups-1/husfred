@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
-
+defaults:
+  run:
+    working-directory: frontend 
+    
 jobs:
   build:
     name: Build
@@ -11,8 +14,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-      - name: Change directory
-      - run: cd frontend
       - name: Install Dependencies
         run: yarn
       - name: Build
