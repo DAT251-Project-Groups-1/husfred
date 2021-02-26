@@ -3,11 +3,10 @@ on:
   push:
     branches:
       - main
-      
 defaults:
   run:
-    working-directory: frontend
-
+    working-directory: frontend 
+    
 jobs:
   build:
     name: Build
@@ -23,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: dist
-          path: dist
+          path: frontend/dist
   deploy:
     name: Deploy
     needs: build
@@ -35,10 +34,11 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: dist
-          path: dist
+          path: frontend/dist
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
+          PROJECT_PATH: frontend
