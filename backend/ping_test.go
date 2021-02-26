@@ -14,7 +14,7 @@ func TestPingPong(t *testing.T) {
 
 	Ping(c)
 
-	assert.Equal(t, 200, w.Code)
+	assert.IsEqual( 200, w.Code)
 
 	var got gin.H
 
@@ -22,7 +22,7 @@ func TestPingPong(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := map[string]string{"message": "pong"}
+	want := map[string]interface{}{"message": "pong"}
 
 	assert.IsEqual(want, got)
 }
