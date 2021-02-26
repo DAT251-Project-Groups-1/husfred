@@ -2,7 +2,7 @@ on: [push, pull_request]
 
 defaults:
   run:
-    working-directory: frontend 
+    working-directory: backend 
 
 name: Test backend
 jobs:
