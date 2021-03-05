@@ -11,7 +11,7 @@ func NewHousehold(ctx *gin.Context) {
 	client := ctx.MustGet("firestore").(*firestore.Client)
 
 	var household models.Household
-	err := ctx.ShouldBind(&household)
+	err := ctx.ShouldBindJSON(&household)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -23,5 +23,5 @@ func NewHousehold(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, &household)
+	ctx.JSON(http.StatusOK, household)
 }
