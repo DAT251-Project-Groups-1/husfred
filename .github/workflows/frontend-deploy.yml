@@ -14,15 +14,19 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1.4.0
       - name: Install Dependencies
-        run: yarn
+        run: flutter pub get
       - name: Build
-        run: yarn run build
+        run: flutter build web
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
           name: dist
           path: frontend/dist
+          
+          
   deploy:
     name: Deploy
     needs: build
