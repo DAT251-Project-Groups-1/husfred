@@ -1,4 +1,4 @@
-package config
+package services
 
 import (
 	"cloud.google.com/go/firestore"

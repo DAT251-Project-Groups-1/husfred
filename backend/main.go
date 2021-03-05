@@ -1,17 +1,21 @@
 package main
 
 import (
-	"github.com/DAT251-Project-Groups-1/husfred/config"
 	"github.com/DAT251-Project-Groups-1/husfred/controllers"
+	"github.com/DAT251-Project-Groups-1/husfred/services"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	firebase := config.InitFirebase()
-	auth := config.InitAuth(firebase)
-	firestore := config.InitFirestore(firebase)
+	firebase := services.InitFirebase()
+	auth := services.InitAuth(firebase)
+	firestore := services.InitFirestore(firebase)
 
 	router := gin.Default()
+
+	// Enable cors support
+	//router.Use(middleware.Cors)
+
 	router.Use(func(ctx *gin.Context) {
 		ctx.Set("firestore", firestore)
 		ctx.Set("auth", auth)
