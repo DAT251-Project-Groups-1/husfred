@@ -17,8 +17,10 @@ func main() {
 		c.Set("auth", auth)
 	})
 	router.GET("/ping", Ping)
+
 	household := router.Group("/household")
 	household.POST("/new", controllers.NewHousehold)
+
     router.Run()
 }
 
