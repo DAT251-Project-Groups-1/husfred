@@ -12,9 +12,9 @@ func main() {
 	firestore := config.InitFirestore(firebase)
 
 	router := gin.Default()
-	router.Use(func(c *gin.Context) {
-		c.Set("firestore", firestore)
-		c.Set("auth", auth)
+	router.Use(func(ctx *gin.Context) {
+		ctx.Set("firestore", firestore)
+		ctx.Set("auth", auth)
 	})
 	router.GET("/ping", Ping)
 
