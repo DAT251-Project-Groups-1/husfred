@@ -15,7 +15,7 @@ func main() {
 	firestore := services.InitFirestore(firebase)
 
 	router := SetupRouter(auth, firestore)
-    router.Run()
+	router.Run()
 }
 
 func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
@@ -33,4 +33,3 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 	household.POST("/new", controllers.NewHousehold)
 	return router
 }
-

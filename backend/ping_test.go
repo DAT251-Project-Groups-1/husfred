@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/DAT251-Project-Groups-1/husfred/controllers"
 	"github.com/DAT251-Project-Groups-1/husfred/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 )
 
 func TestPingPongUnit(t *testing.T) {
