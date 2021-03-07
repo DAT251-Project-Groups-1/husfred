@@ -1,8 +1,6 @@
 name: Test Backend
 on:
   push:
-    branches:
-      - main
     paths: 
      - backend/**
   pull_request:
@@ -15,10 +13,8 @@ defaults:
   run:
     working-directory: backend 
 
-name: Test backend
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Install Go
@@ -29,3 +25,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Test
         run: go test
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
