@@ -26,4 +26,4 @@ jobs:
       - name: Test
         run: go test
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
