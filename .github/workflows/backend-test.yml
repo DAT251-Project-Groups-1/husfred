@@ -16,6 +16,8 @@ defaults:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: key.json
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
@@ -23,7 +25,12 @@ jobs:
           go-version: 1.15.x
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Set environment variables
-        run: export GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
+      - name: Setup GCP
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+            version: '270.0.0'
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
+      - name: Set GOOGLE_APPLICATION_CREDENTIALS
+        run: echo -n ${{ secrets.GCP_SA_KEY }} | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
       - name: Test
         run: go test
