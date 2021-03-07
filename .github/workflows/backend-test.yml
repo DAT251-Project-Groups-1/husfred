@@ -15,7 +15,6 @@ defaults:
 
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Install Go
