@@ -24,6 +24,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set environment variables
-      - run: export GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
+        run: export GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
       - name: Test
         run: go test
