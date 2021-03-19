@@ -19,18 +19,29 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: pongs.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(pongs[index]),
-          );
-        },
+      appBar: AppBar(
+        title: Text("Husfred"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => pingPong()),
-        tooltip: "Ping",
-        child: const Icon(Icons.sports_tennis),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+              child: ElevatedButton(
+                onPressed: null,
+                child: Text("Create household"),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+              child: ElevatedButton(
+                onPressed: null,
+                child: Text("Join household"),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
