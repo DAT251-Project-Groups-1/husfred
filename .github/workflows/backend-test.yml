@@ -36,7 +36,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          service_account_key: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
           export_default_credentials: true
 
       - name: Start local emulator suite
