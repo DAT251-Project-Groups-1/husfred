@@ -1,7 +1,6 @@
 package models
 
 type Household struct {
-	Name  string
-	Users []string
-	Tasks []string
+	Id   string `json:"id"`
+	Name string `json:"name" binding:"required"`
 }
