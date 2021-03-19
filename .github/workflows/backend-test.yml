@@ -26,7 +26,7 @@ jobs:
       - name: Start local emulator suite
         uses: w9jds/firebase-action@master
         with:
-          args: emulators:start
+          args: emulators:start --only firestore
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUSFRED_B5E27 }}
           PROJECT_PATH: backend
