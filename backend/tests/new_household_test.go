@@ -1,15 +1,25 @@
-package main
+package tests
 
-/*func TestNewHousehold(t *testing.T) {
+import (
+	"bytes"
+	"encoding/json"
+	"github.com/DAT251-Project-Groups-1/husfred/config"
+	"github.com/DAT251-Project-Groups-1/husfred/models"
+	"github.com/DAT251-Project-Groups-1/husfred/services"
+	"github.com/go-playground/assert/v2"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+)
+
+func TestNewHousehold(t *testing.T) {
 	firebase := services.InitFirebase()
 	auth := services.InitAuth(firebase)
 	firestore := services.InitFirestore(firebase)
-	router := SetupRouter(auth, firestore)
+	router := config.SetupRouter(auth, firestore)
 
 	body := models.Household{
 		Name:  "Test",
-		Users: []string{"User1"},
-		Tasks: []string{"Task1"},
 	}
 
 	postBody, _:= json.Marshal(body)
@@ -20,4 +30,4 @@ package main
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
-}*/
+}
