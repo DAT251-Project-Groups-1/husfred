@@ -27,7 +27,6 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 		ctx.Set("firestore", firestore)
 		ctx.Set("auth", auth)
 	})
-	router.GET("/ping", controllers.Ping)
 
 	household := router.Group("/household")
 	household.POST("/new", controllers.NewHousehold)
