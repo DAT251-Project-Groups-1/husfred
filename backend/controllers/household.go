@@ -17,11 +17,12 @@ func NewHousehold(ctx *gin.Context) {
 		return
 	}
 
-	_, _, err = client.Collection("household").Add(ctx, &household)
+	var ref *firestore.DocumentRef
+	ref, _, err = client.Collection("household").Add(ctx, &household)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, household)
+	ctx.JSON(http.StatusOK, ref.ID)
 }
