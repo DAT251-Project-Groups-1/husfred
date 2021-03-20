@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"cloud.google.com/go/firestore"
+	"fmt"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -20,6 +21,7 @@ func NewHousehold(ctx *gin.Context) {
 	var ref *firestore.DocumentRef
 	ref, _, err = client.Collection("household").Add(ctx, &household)
 	if err != nil {
+		fmt.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
