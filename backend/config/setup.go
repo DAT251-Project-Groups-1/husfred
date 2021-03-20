@@ -20,5 +20,9 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 
 	household := router.Group("/household")
 	household.POST("/new", controllers.NewHousehold)
+
+	user := router.Group("/user")
+	user.POST("/new", controllers.NewUser)
+
 	return router
 }
