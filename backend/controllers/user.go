@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"net/http"
+
 	"cloud.google.com/go/firestore"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func NewUser(ctx *gin.Context) {
@@ -14,6 +15,12 @@ func NewUser(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = client.Collection("household").Doc(user.HouseholdID).Get(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Household does not exist"})
 		return
 	}
 
