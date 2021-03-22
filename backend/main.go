@@ -9,7 +9,6 @@ func main() {
 	firebase := services.InitFirebase()
 	auth := services.InitAuth(firebase)
 	firestore := services.InitFirestore(firebase)
-
 	router := config.SetupRouter(auth, firestore)
 	router.Run()
 }
