@@ -1,2 +1,2 @@
 #!/bin/sh
-go test
+/opt/hostedtoolcache/go/1.15.10/x64 test
