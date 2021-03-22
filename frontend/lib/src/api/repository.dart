@@ -6,9 +6,11 @@ const API_URL = String.fromEnvironment('API_URL',
     defaultValue: 'husfred-backend-zprwgvw7pa-ew.a.run.app');
 
 class Repository {
-  Future<void> postHousehold(Household household) async {
-    await http.post(Uri.https('$API_URL', '/household/new'),
+  Future<String> postHousehold(Household household) async {
+    var res = await http.post(Uri.https('$API_URL', '/household/new'),
         headers: {"Content-Type": "application/json"},
         body: json.encode(household));
+
+    return json.decode(res.body);
   }
 }

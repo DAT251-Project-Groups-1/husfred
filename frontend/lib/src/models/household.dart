@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Household {
-  String name;
+  String name = "";
 
   Household({required this.name});
 
   Map toJson() => {'name': name};
+
+  Household.fromJson(Map<String, dynamic> json) {
+    name = json["name"];
+  }
 }
