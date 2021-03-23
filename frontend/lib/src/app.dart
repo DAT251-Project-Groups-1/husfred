@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/auth_service.dart';
 import 'package:frontend/src/screens/home.dart';
+import 'package:frontend/src/screens/main.dart';
 import 'package:provider/provider.dart';
 
 import 'loading.dart';
@@ -22,12 +23,20 @@ class App extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasError) return Text(snapshot.error.toString());
               if (!snapshot.hasData) return Loading();
+              AuthService authService = context.watch<AuthService>();
               return FutureBuilder<UserCredential>(
-                future: context.watch<AuthService>().signInAnonymously(),
+                future: authService.signInAnonymously(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) return Text(snapshot.error.toString());
                   if (!snapshot.hasData) return Loading();
-                  return Home();
+                  switch (authService.state) {
+                    case AuthState.Initialized:
+                      return Home();
+                    case AuthState.SignedIn:
+                      return Navigation();
+                    default:
+                      return Text("Error: No state");
+                  }
                 },
               );
             },
