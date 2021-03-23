@@ -1,6 +1,7 @@
 import 'package:frontend/src/api/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/models/household.dart';
+import 'package:frontend/src/models/task.dart';
 
 class ApiService with ChangeNotifier {
   final _repository = Repository();
@@ -11,4 +12,6 @@ class ApiService with ChangeNotifier {
         .postHousehold(household)
         .then((value) => householdID = value);
   }
+
+  void postTask(Task task) => _repository.postTask(task);
 }
