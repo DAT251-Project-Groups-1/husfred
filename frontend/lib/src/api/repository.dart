@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:frontend/src/models/task.dart';
+import 'package:frontend/src/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend/src/models/household.dart';
 
@@ -23,6 +24,16 @@ class Repository {
       headers: {"Content-Type": "application/json"},
       body: json.encode(task),
     );
+
+    return json.decode(res.body);
+  }
+
+  Future<String> postUser(User user) async {
+    var res = await http.post(Uri.https('$API_URL', 'user/new'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(user));
 
     return json.decode(res.body);
   }

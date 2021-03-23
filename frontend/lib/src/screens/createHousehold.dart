@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/models/household.dart';
-import 'package:frontend/src/screens/registerScreen.dart';
+import 'package:frontend/src/screens/registerUser.dart';
 import 'package:provider/provider.dart';
 
 class CreateHousehold extends StatefulWidget {
@@ -54,9 +54,13 @@ class _CreateHouseholdState extends State<CreateHousehold> {
                   // When the user presses the button, show an alert dialog containing the
                   // text that the user has entered into the text field.
                   onPressed: () async {
-                    apiService.postHousehold(Household(name: _controller.text));
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Register()));
+                    var householdId = await apiService
+                        .postHousehold(Household(name: _controller.text));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RegisterUser(househ: householdId)));
                   },
                   child: Text("Create"),
                 ),
