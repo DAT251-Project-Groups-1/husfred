@@ -1,7 +1,8 @@
 package models
 
-// User represents a user of the application
-type User struct {
+type Task struct {
 	Name        string `binding:"required"`
+	UserID      string `binding:"required"`
 	HouseholdID string `binding:"required"`
+	Recurring   bool
 }

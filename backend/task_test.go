@@ -13,23 +13,7 @@ import (
 	"github.com/go-playground/assert/v2"
 )
 
-func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
-
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
-
-	postBody, _ := json.Marshal(models.User{Name: "Test User", HouseholdID: "Nonexisting"})
-	requestBody := bytes.NewBuffer(postBody)
-	req, _ := http.NewRequest("POST", "/user/new", requestBody)
-	router.ServeHTTP(w, req)
-
-	assert.Equal(t, 400, w.Code)
-}
-
-func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
+func TestNewTaskShouldBeCreatedWithExsistingUserAndHousehold(t *testing.T) {
 	firebase := services.InitFirebase()
 	auth := services.InitAuth(firebase)
 	firestore := services.InitFirestore(firebase)
@@ -48,5 +32,39 @@ func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 	req, _ = http.NewRequest("POST", "/user/new", requestBody)
 	router.ServeHTTP(w, req)
 
+	userID := w.Body.String()
+
+	task, _ := json.Marshal(models.Task{
+		Name:        "Test Task",
+		UserID:      userID,
+		HouseholdID: householdID,
+		Recurring:   false,
+	})
+	requestBody = bytes.NewBuffer(task)
+
+	req, _ = http.NewRequest("POST", "/task/new", requestBody)
+	router.ServeHTTP(w, req)
+
 	assert.Equal(t, 200, w.Code)
+}
+
+func TestNewTaskShouldNotBeCreatedWithoutExsistingUserAndHousehold(t *testing.T) {
+	firebase := services.InitFirebase()
+	auth := services.InitAuth(firebase)
+	firestore := services.InitFirestore(firebase)
+	router := config.SetupRouter(auth, firestore)
+	w := httptest.NewRecorder()
+
+	task, _ := json.Marshal(models.Task{
+		Name:        "Test Task",
+		UserID:      "Nonexisting",
+		HouseholdID: "Nonexisting",
+		Recurring:   false,
+	})
+	requestBody := bytes.NewBuffer(task)
+
+	req, _ := http.NewRequest("POST", "/task/new", requestBody)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 400, w.Code)
 }
