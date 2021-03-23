@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
-
-import 'registerScreen.dart';
+import 'package:frontend/src/models/user.dart';
+import 'package:provider/provider.dart';
+import 'package:frontend/src/screens/main.dart';
+import 'package:frontend/src/api/api_service.dart';
 
 class RegisterUser extends StatefulWidget {
   final String househ;
@@ -31,6 +30,8 @@ class _RegisterUserState extends State<RegisterUser> {
 
   @override
   Widget build(BuildContext context) {
+    ApiService apiService = context.watch<ApiService>();
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Register"),
@@ -58,21 +59,14 @@ class _RegisterUserState extends State<RegisterUser> {
                         // When the user presses the button, call on the backend to create a new
                         // user with the specified name and assigned to specified household ID
                         onPressed: () async {
-                          http.post(
-                            Uri.https('husfred-backend-zprwgvw7pa-ew.a.run.app',
-                                'user/new'),
-                            headers: <String, String>{
-                              'Content-Type': 'application/json; charset=UTF-8',
-                            },
-                            body: jsonEncode(<String, String>{
-                              'Name': _controller.text,
-                              'HouseholdID': widget.househ,
-                            }),
-                          );
-                          //AlertDialog(
-                          // Retrieve the text the user has entered by using the
-                          // TextEditingController.
-                          //content: Text(widget.househ));
+                          apiService.postUser(User(
+                              name: _controller.text,
+                              householdId: widget.househ));
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Navigation();
+                          }));
                         },
                         child: Text("Register"),
                       ))

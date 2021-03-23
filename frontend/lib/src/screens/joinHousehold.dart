@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'registerScreen.dart';
+import 'package:frontend/src/screens/registerUser.dart';
 
 class JoinHousehold extends StatefulWidget {
   const JoinHousehold({Key? key}) : super(key: key);

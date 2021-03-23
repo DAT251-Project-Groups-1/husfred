@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 
 import 'createHousehold.dart';
 import 'joinHousehold.dart';
@@ -11,14 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> pongs = [];
-
-  pingPong() {
-    http
-        .read(Uri.parse('https://husfred-backend-zprwgvw7pa-ew.a.run.app/ping'))
-        .then((value) => pongs.add(value));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
