@@ -17,14 +17,13 @@ class AuthService with ChangeNotifier {
       if (user != null) {
         this.user = user;
 
-        FirebaseFirestore.instance
-            .collection('user')
-            .doc(user.uid)
-            .get()
-            .then(
-              (value) => changeState(AuthState.SignedIn),
-            )
-            .catchError((err) {
+        FirebaseFirestore.instance.collection('user').doc(user.uid).get().then(
+          (DocumentSnapshot doc) {
+            if (doc.exists) {
+              changeState(AuthState.SignedIn);
+            }
+          },
+        ).catchError((err) {
           //Ignore
         });
       }
