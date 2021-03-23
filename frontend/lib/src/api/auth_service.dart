@@ -10,7 +10,7 @@ enum AuthState {
 class AuthService with ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user;
-  AuthState state = AuthState.SignedIn;
+  AuthState state = AuthState.Initialized;
 
   AuthService() {
     auth.authStateChanges().listen((User? user) async {
