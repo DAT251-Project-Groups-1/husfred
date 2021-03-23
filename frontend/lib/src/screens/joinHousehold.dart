@@ -45,25 +45,21 @@ class _JoinHouseholdState extends State<JoinHousehold> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                child: ElevatedButton(
-                  // When the user presses the button, show an alert dialog containing the
-                  // text that the user has entered into the text field.
-                  onPressed: () async {
-                    return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          // Retrieve the text the user has entered by using the
-                          // TextEditingController.
-                          content: Text(_controller.text),
-                        );
-                      },
-                    );
-                  },
-                  child: Text("Join"),
-                ),
-              ),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                  child: ElevatedButton(
+                    // When the user presses the button, show an alert dialog containing the
+                    // text that the user has entered into the text field.
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterUser(
+                              househ: _controller.text,
+                            ),
+                          ));
+                    },
+                    child: Text("Join"),
+                  ))
             ],
           ),
         ),
