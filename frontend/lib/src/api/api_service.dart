@@ -4,8 +4,11 @@ import 'package:frontend/src/models/household.dart';
 
 class ApiService with ChangeNotifier {
   final _repository = Repository();
+  String householdID = "";
 
-  Future<void> postHousehold(Household household) async {
-    await _repository.postHousehold(household);
+  void postHousehold(Household household) async {
+    await _repository
+        .postHousehold(household)
+        .then((value) => householdID = value);
   }
 }
