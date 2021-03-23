@@ -7,10 +7,10 @@ class ApiService with ChangeNotifier {
   final _repository = Repository();
   String householdID = "";
 
-  void postHousehold(Household household) async {
-    await _repository
-        .postHousehold(household)
-        .then((value) => householdID = value);
+  Future<String> postHousehold(Household household) async {
+    var result = await _repository.postHousehold(household);
+    householdID = result;
+    return result;
   }
 
   void postUser(User user) async {
