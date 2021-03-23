@@ -38,7 +38,9 @@ func TestNewTaskShouldBeCreatedWithExsistingUserAndHousehold(t *testing.T) {
 		Name:        "Test Task",
 		UserID:      userID,
 		HouseholdID: householdID,
+		Date:        "20.01.2021",
 		Recurring:   false,
+		Done:        false,
 	})
 	requestBody = bytes.NewBuffer(task)
 
@@ -59,7 +61,9 @@ func TestNewTaskShouldNotBeCreatedWithoutExsistingUserAndHousehold(t *testing.T)
 		Name:        "Test Task",
 		UserID:      "Nonexisting",
 		HouseholdID: "Nonexisting",
+		Date:        "20.01.2021",
 		Recurring:   false,
+		Done:        false,
 	})
 	requestBody := bytes.NewBuffer(task)
 
