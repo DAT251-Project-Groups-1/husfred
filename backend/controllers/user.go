@@ -24,11 +24,15 @@ func NewUser(ctx *gin.Context) {
 		return
 	}
 
-	_, _, err = client.Collection("user").Add(ctx, &user)
+	ref, _, err := client.Collection("user").Add(ctx, &user)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusOK, ref.ID)
+}
+
+func GetUsersInHousehold(ctx *gin.Context) {
+
 }

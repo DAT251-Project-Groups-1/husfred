@@ -2,7 +2,10 @@ package main
 
 import (
 	"bytes"
+	"cloud.google.com/go/firestore"
+	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,8 +16,14 @@ import (
 	"github.com/go-playground/assert/v2"
 )
 
-func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
+func createHousehold(client *firestore.Client) (*firestore.DocumentRef, error) {
+	ctx := context.Background()
+	household := models.Household{Name: "Test House"}
+	ref, _ , err := client.Collection("household").Add(ctx, household)
+	return ref, err
+}
 
+func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
 	firebase := services.InitFirebase()
 	auth := services.InitAuth(firebase)
 	firestore := services.InitFirestore(firebase)
@@ -30,23 +39,29 @@ func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
 }
 
 func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
+	ctx := context.Background()
 	firebase := services.InitFirebase()
 	auth := services.InitAuth(firebase)
 	firestore := services.InitFirestore(firebase)
 	router := config.SetupRouter(auth, firestore)
 	w := httptest.NewRecorder()
 
-	household, _ := json.Marshal(models.Household{Name: "Test House"})
-	requestBody := bytes.NewBuffer(household)
-	req, _ := http.NewRequest("POST", "/household/new", requestBody)
+	household, err := createHousehold(firestore)
+	if err != nil {
+		t.Error("Failed creation of household")
+		return
+	}
+
+	user, _ := json.Marshal(models.User{Name: "Test User", HouseholdID: household.ID})
+	requestBody := bytes.NewBuffer(user)
+	req, _ := http.NewRequest("POST", "/user/new", requestBody)
 	router.ServeHTTP(w, req)
 
-	householdID := w.Body.String()
-
-	user, _ := json.Marshal(models.User{Name: "Test User", HouseholdID: householdID})
-	requestBody = bytes.NewBuffer(user)
-	req, _ = http.NewRequest("POST", "/user/new", requestBody)
-	router.ServeHTTP(w, req)
-
-	assert.Equal(t, 200, w.Code)
+	var userId string
+	err = json.Unmarshal(w.Body.Bytes(), &userId)
+	snapshot, err := firestore.Collection("user").Doc(userId).Get(ctx)
+	if err != nil {
+		fmt.Println(err)
+	}
+	assert.IsEqual(snapshot.Exists(), true)
 }

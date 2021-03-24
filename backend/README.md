@@ -5,3 +5,6 @@
 # How to test
 1. export FIRESTORE_EMULATOR_HOST="localhost:8090"
 2. `go test`
+
+# Run tests locally
+* ./test_local.sh

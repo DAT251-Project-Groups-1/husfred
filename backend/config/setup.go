@@ -23,6 +23,7 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 
 	user := router.Group("/user")
 	user.POST("/new", controllers.NewUser)
+	user.GET("/household/:id", controllers.GetUsersInHousehold)
 
 	task := router.Group("/task")
 	task.POST("/new", controllers.NewTask)
