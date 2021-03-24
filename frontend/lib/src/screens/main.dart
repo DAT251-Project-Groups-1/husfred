@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/screens/content/household.dart';
+import 'package:frontend/src/screens/content/widgets/newTask.dart';
 
 import 'content/feed.dart';
 import 'content/todo.dart';
@@ -34,6 +35,17 @@ class _NavigationState extends State<Navigation> {
           });
         },
         currentIndex: _currentIndex,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return NewTask();
+            },
+          );
+        },
       ),
     );
   }

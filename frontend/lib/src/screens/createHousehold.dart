@@ -54,12 +54,13 @@ class _CreateHouseholdState extends State<CreateHousehold> {
                   // When the user presses the button, show an alert dialog containing the
                   // text that the user has entered into the text field.
                   onPressed: () async {
-                    apiService.postHousehold(Household(name: _controller.text));
+                    var householdId = await apiService
+                        .postHousehold(Household(name: _controller.text));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                RegisterUser(househ: apiService.householdID)));
+                                RegisterUser(househ: householdId)));
                   },
                   child: Text("Create"),
                 ),
