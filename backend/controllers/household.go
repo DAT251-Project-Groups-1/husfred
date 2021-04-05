@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"cloud.google.com/go/firestore"
 	"fmt"
+	"net/http"
+
+	"cloud.google.com/go/firestore"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func NewHousehold(ctx *gin.Context) {
@@ -27,4 +28,18 @@ func NewHousehold(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, ref.ID)
+}
+
+func GetHousehold(ctx *gin.Context) {
+	client := ctx.MustGet("firestore").(*firestore.Client)
+
+	dsnap, err := client.Collection("household").Doc(ctx.Param("id")).Get(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	var household models.Household
+	dsnap.DataTo(&household)
+
+	ctx.JSON(http.StatusOK, household)
 }
