@@ -13,7 +13,7 @@ class TodoTile extends StatelessWidget {
         onDismissed: (direction) {
           //Mark task as done in db
         },
-        background: Container(color: Colors.red),
+        background: Container(color: Colors.green),
         child: Card(
           child: ListTile(
             leading: Icon(Icons.account_circle_outlined),
