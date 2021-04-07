@@ -1,11 +1,15 @@
 import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart' as fa;
+import 'package:frontend/src/models/household.dart';
 import 'package:frontend/src/models/task.dart';
 import 'package:frontend/src/models/user.dart';
 import 'package:http/http.dart' as http;
-import 'package:frontend/src/models/household.dart';
 
 const API_URL = String.fromEnvironment('API_URL',
     defaultValue: 'husfred-backend-zprwgvw7pa-ew.a.run.app');
+
+final fa.FirebaseAuth auth = fa.FirebaseAuth.instance;
 
 class Repository {
   Future<String> postHousehold(Household household) async {
@@ -29,9 +33,12 @@ class Repository {
   }
 
   Future<String> postUser(User user) async {
+    fa.IdTokenResult idTokenResult =
+        await auth.currentUser!.getIdTokenResult(true);
     var res = await http.post(Uri.https('$API_URL', 'user/new'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${idTokenResult.token}'
         },
         body: json.encode(user));
 
@@ -47,7 +54,15 @@ class Repository {
   }
 
   Future<List<User>> getLeaderboard(String householdID) async {
-    var res = await http.get(Uri.https('$API_URL', 'user/household/$householdID'));
+    fa.IdTokenResult idTokenResult =
+        await auth.currentUser!.getIdTokenResult(true);
+    var res = await http.get(
+      Uri.https('$API_URL', 'user/household/$householdID'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${idTokenResult.token}'
+      },
+    );
+    print(res.body);
 
     return (json.decode(res.body) as List)
         .map((p) => User.fromJson(p))

@@ -20,13 +20,13 @@ class AuthService with ChangeNotifier {
     auth.authStateChanges().listen((User? user) async {
       if (user != null) {
         this.user = user;
-        changeState(AuthState.Initialized);
 
-        print(user.uid);
         FirebaseFirestore.instance.collection('user').doc(user.uid).get().then(
           (DocumentSnapshot doc) {
             if (doc.exists) {
               changeState(AuthState.SignedIn);
+            } else {
+              changeState(AuthState.Initialized);
             }
           },
         ).catchError((err) {
