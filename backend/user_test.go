@@ -47,10 +47,17 @@ func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 	user, _ := json.Marshal(models.User{Name: "Test User", HouseholdID: household.ID})
 	requestBody := bytes.NewBuffer(user)
 	req, _ := http.NewRequest("POST", "/user/new", requestBody)
+	token := CreateFirebaseAuthUser(auth)
+	bearer := "Bearer " + token
+	req.Header.Set("Authorization", bearer)
 	router.ServeHTTP(w, req)
+
+	fmt.Println(w.Body.String())
 
 	var userId string
 	err = json.Unmarshal(w.Body.Bytes(), &userId)
+	fmt.Println("User id test")
+	fmt.Println(userId)
 	snapshot, err := firestore.Collection("user").Doc(userId).Get(ctx)
 	if err != nil {
 		fmt.Println(err)
@@ -71,7 +78,7 @@ func TestGetUserFromHouseholdGetsUsers(t *testing.T) {
 		return
 	}
 
-	_ , err = CreateUser(firestore, household)
+	_, err = CreateUser(firestore, household)
 	if err != nil {
 		t.Error("Failed creation of user", err)
 		return
@@ -79,6 +86,9 @@ func TestGetUserFromHouseholdGetsUsers(t *testing.T) {
 
 	url := fmt.Sprintf("/user/household/%s", household.ID)
 	req, _ := http.NewRequest("GET", url, nil)
+	token := CreateFirebaseAuthUser(auth)
+	bearer := "Bearer " + token
+	req.Header.Set("Authorization", bearer)
 	router.ServeHTTP(w, req)
 
 	var users []models.User

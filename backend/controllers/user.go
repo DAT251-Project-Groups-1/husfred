@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"firebase.google.com/go/v4/auth"
 	"fmt"
 	"google.golang.org/api/iterator"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 
 func NewUser(ctx *gin.Context) {
 	client := ctx.MustGet("firestore").(*firestore.Client)
+	userRecord := ctx.MustGet("user").(*auth.UserRecord)
 
 	var user models.User
 	err := ctx.ShouldBindJSON(&user)
@@ -26,13 +28,13 @@ func NewUser(ctx *gin.Context) {
 		return
 	}
 
-	ref, _, err := client.Collection("user").Add(ctx, &user)
+	_, err = client.Collection("user").Doc(userRecord.UID).Set(ctx, &user)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, ref.ID)
+	ctx.JSON(http.StatusOK, userRecord.UID)
 }
 
 func GetUsersInHousehold(ctx *gin.Context) {

@@ -23,6 +23,7 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 	household.GET("/:id", controllers.GetHousehold)
 
 	user := router.Group("/user")
+	user.Use(middleware.Auth)
 	user.POST("/new", controllers.NewUser)
 	user.GET("/household/:id", controllers.GetUsersInHousehold)
 
