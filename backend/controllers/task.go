@@ -55,7 +55,7 @@ func GetTasks(ctx *gin.Context) {
 		done = true
 	}
 
-	iter := client.Collection("household").Doc(ctx.Param("householdID")).Collection("tasks").Where("done", "==", done).Documents(ctx)
+	iter := client.Collection("household").Doc(ctx.Param("householdID")).Collection("task").Where("Done", "==", done).Documents(ctx)
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
@@ -74,6 +74,6 @@ func GetTasks(ctx *gin.Context) {
 		}
 		tasks = append(tasks, task)
 	}
-
+	fmt.Println(tasks)
 	ctx.JSON(http.StatusOK, tasks)
 }
