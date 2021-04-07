@@ -17,7 +17,7 @@ func CreateHousehold(client *firestore.Client) (*firestore.DocumentRef, error) {
 
 func CreateUser(client *firestore.Client, hh *firestore.DocumentRef) (*firestore.DocumentRef, error) {
 	ctx := context.Background()
-	user := models.User{Name: "Test User", HouseholdID: hh.ID}
+	user := models.User{Name: "Test User", HouseholdID: hh.ID, Points: 0}
 	ref, _, err := client.Collection("user").Add(ctx, user)
 	return ref, err
 }
