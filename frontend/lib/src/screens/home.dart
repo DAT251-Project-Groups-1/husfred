@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'createHousehold.dart';
-import 'joinHousehold.dart';
+import 'package:frontend/src/api/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,10 +23,7 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CreateHousehold()));
+                  context.read<AuthService>().changeState(AuthState.Create);
                 },
                 child: Text("Create household"),
               ),
@@ -36,8 +32,7 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => JoinHousehold()));
+                  context.read<AuthService>().changeState(AuthState.Join);
                 },
                 child: Text("Join household"),
               ),

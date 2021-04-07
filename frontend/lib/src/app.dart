@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
+import 'package:frontend/src/screens/createHousehold.dart';
 import 'package:frontend/src/screens/home.dart';
+import 'package:frontend/src/screens/joinHousehold.dart';
 import 'package:frontend/src/screens/main.dart';
+import 'package:frontend/src/screens/registerUser.dart';
 import 'package:provider/provider.dart';
 
 import 'loading.dart';
@@ -30,8 +34,16 @@ class App extends StatelessWidget {
                   if (snapshot.hasError) return Text(snapshot.error.toString());
                   if (!snapshot.hasData) return Loading();
                   switch (authService.state) {
+                    case AuthState.UnInitialized:
+                      return Loading();
                     case AuthState.Initialized:
                       return Home();
+                    case AuthState.Join:
+                      return JoinHousehold();
+                    case AuthState.Create:
+                      return CreateHousehold();
+                    case AuthState.Register:
+                      return RegisterUser(household: context.read<ApiService>().householdID);
                     case AuthState.SignedIn:
                       return Navigation();
                     default:

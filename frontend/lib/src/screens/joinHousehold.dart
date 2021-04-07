@@ -1,6 +1,10 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:frontend/src/screens/registerUser.dart';
+import 'package:frontend/src/api/api_service.dart';
+import 'package:frontend/src/api/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class JoinHousehold extends StatefulWidget {
   const JoinHousehold({Key? key}) : super(key: key);
@@ -40,25 +44,20 @@ class _JoinHouseholdState extends State<JoinHousehold> {
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(labelText: "Household ID"),
-                  onSubmitted: (String value) async {},
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                  child: ElevatedButton(
-                    // When the user presses the button, show an alert dialog containing the
-                    // text that the user has entered into the text field.
-                    onPressed: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterUser(
-                              househ: _controller.text,
-                            ),
-                          ));
-                    },
-                    child: Text("Join"),
-                  ))
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                child: ElevatedButton(
+                  // When the user presses the button, show an alert dialog containing the
+                  // text that the user has entered into the text field.
+                  onPressed: () async {
+                    context.read<ApiService>().householdID = _controller.text;
+                    context.read<AuthService>().changeState(AuthState.Register);
+                  },
+                  child: Text("Join"),
+                ),
+              ),
             ],
           ),
         ),
