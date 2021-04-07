@@ -45,4 +45,12 @@ class Repository {
         .map((p) => Task.fromJson(p))
         .toList();
   }
+
+  Future<List<User>> getLeaderboard(String householdID) async {
+    var res = await http.get(Uri.https('$API_URL', 'user/household/$householdID'));
+
+    return (json.decode(res.body) as List)
+        .map((p) => User.fromJson(p))
+        .toList();
+  }
 }

@@ -1,13 +1,15 @@
 class User {
   String name = "";
   String householdId = "";
+  int points = 0;
 
   User({required this.name, required this.householdId});
 
   Map toJson() => {'name': name, 'householdId': householdId};
 
   User.fromJson(Map<String, dynamic> json) {
-    name = json["name"];
-    householdId = json["householdId"];
+    name = json["Name"];
+    householdId = json["HouseholdID"];
+    points = json["Points"];
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
-import 'package:frontend/src/screens/content/widgets/todoList.dart';
+import 'package:frontend/src/screens/content/todo/todoList.dart';
 import 'package:provider/provider.dart';
 
 class Todo extends StatefulWidget {

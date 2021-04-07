@@ -32,7 +32,10 @@ class ApiService with ChangeNotifier {
         done: false)
   ];
 
+  List<User> _users = [];
+
   List<Task> get tasks => _tasks;
+  List<User> get users => _users;
 
   Future<String> postHousehold(Household household) async {
     var result = await _repository.postHousehold(household);
@@ -53,4 +56,13 @@ class ApiService with ChangeNotifier {
 
     notifyListeners();
   }
+
+
+  getLeaderboard() async {
+    var users = await _repository.getLeaderboard(householdID);
+    _users = users;
+
+    notifyListeners();
+  }
+
 }
