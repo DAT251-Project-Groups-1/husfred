@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -71,4 +72,35 @@ func TestNewTaskShouldNotBeCreatedWithoutExsistingUserAndHousehold(t *testing.T)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 400, w.Code)
+}
+
+func TestGetUnfinishedTasks(t *testing.T) {
+	firebase := services.InitFirebase()
+	auth := services.InitAuth(firebase)
+	firestore := services.InitFirestore(firebase)
+	router := config.SetupRouter(auth, firestore)
+	w := httptest.NewRecorder()
+
+	household, err := CreateHousehold(firestore)
+	if err != nil {
+		t.Error("Failed creation of household")
+		return
+	}
+
+	user, err := CreateUser(firestore, household)
+	if err != nil {
+		t.Error("Failed creation of household")
+		return
+	}
+
+	task, _ := json.Marshal(models.Task{Name: "Test Task 1", HouseholdID: household.ID, Done: false, UserID: user.ID})
+	requestBody := bytes.NewBuffer(task)
+	req, _ := http.NewRequest("POST", "/task/new", requestBody)
+	router.ServeHTTP(w, req)
+
+	url := fmt.Sprintf("/task/%s?done=false", household.ID)
+	req, _ = http.NewRequest("GET", url, requestBody)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
 }

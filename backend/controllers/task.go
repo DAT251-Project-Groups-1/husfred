@@ -33,7 +33,7 @@ func NewTask(ctx *gin.Context) {
 	}
 
 	var ref *firestore.DocumentRef
-	ref, _, err = client.Collection("task").Add(ctx, &task)
+	ref, _, err = client.Collection("household").Doc(task.HouseholdID).Collection("task").Add(ctx, &task)
 	if err != nil {
 		fmt.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"cloud.google.com/go/firestore"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,13 +14,6 @@ import (
 	"github.com/DAT251-Project-Groups-1/husfred/services"
 	"github.com/go-playground/assert/v2"
 )
-
-func createHousehold(client *firestore.Client) (*firestore.DocumentRef, error) {
-	ctx := context.Background()
-	household := models.Household{Name: "Test House"}
-	ref, _ , err := client.Collection("household").Add(ctx, household)
-	return ref, err
-}
 
 func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
 	firebase := services.InitFirebase()
@@ -46,7 +38,7 @@ func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 	router := config.SetupRouter(auth, firestore)
 	w := httptest.NewRecorder()
 
-	household, err := createHousehold(firestore)
+	household, err := CreateHousehold(firestore)
 	if err != nil {
 		t.Error("Failed creation of household")
 		return
