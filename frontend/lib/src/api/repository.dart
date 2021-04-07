@@ -37,4 +37,12 @@ class Repository {
 
     return json.decode(res.body);
   }
+
+  Future<List<Task>> getTasks(String householdID, bool done) async {
+    var res = await http.get(Uri.https('$API_URL', 'task/$householdID'));
+
+    return (json.decode(res.body) as List)
+        .map((p) => Task.fromJson(p))
+        .toList();
+  }
 }

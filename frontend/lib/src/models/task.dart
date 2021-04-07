@@ -22,4 +22,13 @@ class Task {
         'recurring': recurring,
         'done': done
       };
+
+  Task.fromJson(Map<String, dynamic> json) {
+    name = json["Name"];
+    userID = json["UserID"];
+    householdID = json["HouseholdID"];
+    date = json["Date"];
+    recurring = json["Recurring"];
+    done = json["Done"];
+  }
 }
