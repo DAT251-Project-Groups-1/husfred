@@ -7,6 +7,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/api/iterator"
 )
 
 func NewTask(ctx *gin.Context) {
@@ -40,4 +41,39 @@ func NewTask(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, ref.ID)
+}
+
+func GetTasks(ctx *gin.Context) {
+	client := ctx.MustGet("firestore").(*firestore.Client)
+
+	var tasks []models.Task
+
+	var done = false
+	var q = ctx.DefaultQuery("done", "false")
+
+	if q == "true" {
+		done = true
+	}
+
+	iter := client.Collection("household").Doc(ctx.Param("householdID")).Collection("tasks").Where("done", "==", done).Documents(ctx)
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			fmt.Println(err.Error())
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		var task models.Task
+		if err := doc.DataTo(&task); err != nil {
+			fmt.Println(err.Error())
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		tasks = append(tasks, task)
+	}
+
+	ctx.JSON(http.StatusOK, tasks)
 }
