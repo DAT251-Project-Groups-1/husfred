@@ -40,7 +40,7 @@ func GetUsersInHousehold(ctx *gin.Context) {
 	householdID := ctx.Param("id")
 
 	var users []models.User
-	iter := client.Collection("user").Where("HouseholdID", "==", householdID).Documents(ctx)
+	iter := client.Collection("user").Where("HouseholdID", "==", householdID).OrderBy("Points", firestore.Desc).Documents(ctx)
 
 	for {
 		doc, err := iter.Next()
