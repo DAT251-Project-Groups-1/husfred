@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+	"google.golang.org/api/iterator"
 	"net/http"
 
 	"cloud.google.com/go/firestore"
@@ -34,5 +36,28 @@ func NewUser(ctx *gin.Context) {
 }
 
 func GetUsersInHousehold(ctx *gin.Context) {
+	client := ctx.MustGet("firestore").(*firestore.Client)
+	householdID := ctx.Param("id")
 
+	var users []models.User
+	iter := client.Collection("user").Where("HouseholdID", "==", householdID).Documents(ctx)
+
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		fmt.Println(doc.Data())
+		var user models.User
+		if err := doc.DataTo(&user); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		users = append(users, user)
+	}
+	ctx.JSON(http.StatusOK, users)
 }

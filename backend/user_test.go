@@ -57,3 +57,33 @@ func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 	}
 	assert.IsEqual(snapshot.Exists(), true)
 }
+
+func TestGetUserFromHouseholdGetsUsers(t *testing.T) {
+	firebase := services.InitFirebase()
+	auth := services.InitAuth(firebase)
+	firestore := services.InitFirestore(firebase)
+	router := config.SetupRouter(auth, firestore)
+	w := httptest.NewRecorder()
+
+	household, err := CreateHousehold(firestore)
+	if err != nil {
+		t.Error("Failed creation of household")
+		return
+	}
+
+	_ , err = CreateUser(firestore, household)
+	if err != nil {
+		t.Error("Failed creation of user", err)
+		return
+	}
+
+	url := fmt.Sprintf("/user/household/%s", household.ID)
+	req, _ := http.NewRequest("GET", url, nil)
+	router.ServeHTTP(w, req)
+
+	var users []models.User
+
+	_ = json.Unmarshal(w.Body.Bytes(), &users)
+
+	assert.Equal(t, 1, len(users))
+}
