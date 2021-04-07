@@ -4,4 +4,5 @@ package models
 type User struct {
 	Name        string `binding:"required"`
 	HouseholdID string `binding:"required"`
+	Points      int
 }
