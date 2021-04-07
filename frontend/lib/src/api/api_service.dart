@@ -41,8 +41,16 @@ class ApiService with ChangeNotifier {
   }
 
   void postUser(User user) async {
+    householdID = user.householdId;
     await _repository.postUser(user);
   }
 
   void postTask(Task task) => _repository.postTask(task);
+
+  getTasks(bool done) async {
+    var tasks = await _repository.getTasks(householdID, done);
+    _tasks = tasks;
+
+    notifyListeners();
+  }
 }

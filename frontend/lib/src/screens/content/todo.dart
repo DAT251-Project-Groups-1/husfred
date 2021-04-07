@@ -10,11 +10,16 @@ class Todo extends StatefulWidget {
 
 class _TodoState extends State<Todo> {
   @override
+  void initState() {
+    super.initState();
+    context.read<ApiService>().getTasks(false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ApiService apiService = context.watch<ApiService>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Household"),
+        title: Text("Todo"),
       ),
       body: TodoList(),
     );

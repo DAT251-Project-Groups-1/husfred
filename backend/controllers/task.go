@@ -74,6 +74,5 @@ func GetTasks(ctx *gin.Context) {
 		}
 		tasks = append(tasks, task)
 	}
-	fmt.Println(tasks)
 	ctx.JSON(http.StatusOK, tasks)
 }
