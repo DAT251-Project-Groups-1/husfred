@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/src/api/api_service.dart';
 
 enum AuthState {
   UnInitialized,
@@ -24,6 +25,7 @@ class AuthService with ChangeNotifier {
         FirebaseFirestore.instance.collection('user').doc(user.uid).get().then(
           (DocumentSnapshot doc) {
             if (doc.exists) {
+              ApiService.householdID = doc.data()?["HouseholdID"];
               changeState(AuthState.SignedIn);
             } else {
               changeState(AuthState.Initialized);

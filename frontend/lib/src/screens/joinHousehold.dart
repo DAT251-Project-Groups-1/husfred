@@ -52,7 +52,7 @@ class _JoinHouseholdState extends State<JoinHousehold> {
                   // When the user presses the button, show an alert dialog containing the
                   // text that the user has entered into the text field.
                   onPressed: () async {
-                    context.read<ApiService>().householdID = _controller.text;
+                    ApiService.householdID = _controller.text;
                     context.read<AuthService>().changeState(AuthState.Register);
                   },
                   child: Text("Join"),

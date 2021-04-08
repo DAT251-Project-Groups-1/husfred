@@ -43,7 +43,7 @@ class App extends StatelessWidget {
                     case AuthState.Create:
                       return CreateHousehold();
                     case AuthState.Register:
-                      return RegisterUser(household: context.read<ApiService>().householdID);
+                      return RegisterUser(household: ApiService.householdID);
                     case AuthState.SignedIn:
                       return Navigation();
                     default:
