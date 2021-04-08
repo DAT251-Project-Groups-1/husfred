@@ -82,7 +82,7 @@ class _NewTaskState extends State<NewTask> {
                   Task(
                       name: taskField.text,
                       userID: "psiYjxJ0RQHatDFe9Fq7",
-                      householdID: apiService.householdID,
+                      householdID: ApiService.householdID,
                       date: DateTime.now().toString(),
                       recurring: _recurring,
                       done: false),

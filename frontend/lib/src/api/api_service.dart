@@ -6,7 +6,7 @@ import 'package:frontend/src/models/user.dart';
 
 class ApiService with ChangeNotifier {
   final _repository = Repository();
-  String householdID = "";
+  static String householdID = "";
 
   List<Task> _tasks = [
     Task(

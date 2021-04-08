@@ -54,15 +54,13 @@ class Repository {
   }
 
   Future<List<User>> getLeaderboard(String householdID) async {
-    fa.IdTokenResult idTokenResult =
-        await auth.currentUser!.getIdTokenResult(true);
+    fa.IdTokenResult idTokenResult = await auth.currentUser!.getIdTokenResult();
     var res = await http.get(
       Uri.https('$API_URL', 'user/household/$householdID'),
       headers: <String, String>{
         'Authorization': 'Bearer ${idTokenResult.token}'
       },
     );
-    print(res.body);
 
     return (json.decode(res.body) as List)
         .map((p) => User.fromJson(p))
