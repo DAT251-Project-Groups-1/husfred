@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart' as fa;
+import 'package:frontend/src/api/auth_service.dart';
 import 'package:frontend/src/models/household.dart';
 import 'package:frontend/src/models/task.dart';
 import 'package:frontend/src/models/user.dart';
@@ -46,7 +47,19 @@ class Repository {
   }
 
   Future<List<Task>> getTasks(String householdID, bool done) async {
-    var res = await http.get(Uri.https('$API_URL', 'task/$householdID'));
+    fa.IdTokenResult idTokenResult =
+        await auth.currentUser!.getIdTokenResult(true);
+
+    var queryParams = {
+      'done': done.toString(),
+    };
+
+    var res = await http.get(
+      Uri.https('$API_URL', 'task/$householdID', queryParams),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${idTokenResult.token}'
+      },
+    );
 
     return (json.decode(res.body) as List)
         .map((p) => Task.fromJson(p))

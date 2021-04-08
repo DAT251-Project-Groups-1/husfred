@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/screens/content/household/household.dart';
 import 'package:frontend/src/screens/content/todo/newTask.dart';
 
-import 'content/feed.dart';
+import 'content/feed/feed.dart';
 import 'content/todo/todo.dart';
 
 class Navigation extends StatefulWidget {

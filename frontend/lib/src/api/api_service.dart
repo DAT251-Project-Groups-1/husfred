@@ -8,7 +8,7 @@ class ApiService with ChangeNotifier {
   final _repository = Repository();
   String householdID = "";
 
-  List<Task> _tasks = [
+  List<Task> _unfinishedTasks = [
     Task(
         name: "Task1",
         userID: "userID",
@@ -32,10 +32,28 @@ class ApiService with ChangeNotifier {
         done: false)
   ];
 
+  List<Task> _completedTasks = [
+    Task(
+        name: "CompletedTask1",
+        userID: "userID",
+        householdID: "householdID",
+        date: "12.02.21",
+        recurring: true,
+        done: false),
+    Task(
+        name: "CompletedTask2",
+        userID: "userID",
+        householdID: "householdID",
+        date: "12.02.21",
+        recurring: true,
+        done: false),
+  ];
+
   List<User> _users = [];
 
-  List<Task> get tasks => _tasks;
+  List<Task> get unfinishedTasks => _unfinishedTasks;
   List<User> get users => _users;
+  List<Task> get completedTasks => _completedTasks;
 
   Future<String> postHousehold(Household household) async {
     var result = await _repository.postHousehold(household);
@@ -45,6 +63,7 @@ class ApiService with ChangeNotifier {
 
   void postUser(User user) async {
     householdID = user.householdId;
+    print('hhID: ' + householdID);
     await _repository.postUser(user);
   }
 
@@ -52,11 +71,14 @@ class ApiService with ChangeNotifier {
 
   getTasks(bool done) async {
     var tasks = await _repository.getTasks(householdID, done);
-    _tasks = tasks;
+    if (done) {
+      _completedTasks = tasks;
+    } else {
+      _unfinishedTasks = tasks;
+    }
 
     notifyListeners();
   }
-
 
   getLeaderboard() async {
     var users = await _repository.getLeaderboard(householdID);
@@ -64,5 +86,4 @@ class ApiService with ChangeNotifier {
 
     notifyListeners();
   }
-
 }
