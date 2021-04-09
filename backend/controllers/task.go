@@ -99,7 +99,12 @@ func FinishTask(ctx *gin.Context) {
 		return
 	}
 
-	_, err = client.Collection("household").Doc(task.HouseholdID).Collection("task").Doc(task.TaskID).Delete(ctx)
+	_, err = client.Collection("household").Doc(task.HouseholdID).Collection("task").Doc(task.TaskID).Update(ctx, []firestore.Update{
+		{
+			Path:  "Done",
+			Value: true,
+		},
+	})
 	if err != nil {
 		fmt.Println(err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
