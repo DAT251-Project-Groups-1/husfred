@@ -37,6 +37,7 @@ class Repository {
       headers: {"Content-Type": "application/json"},
       body: json.encode(task),
     );
+    print(res.body);
     return json.decode(res.body);
   }
 

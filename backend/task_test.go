@@ -104,3 +104,45 @@ func TestGetUnfinishedTasks(t *testing.T) {
 
 	assert.Equal(t, 200, w.Code)
 }
+
+func TestFinishTask(t *testing.T) {
+	firebase := services.InitFirebase()
+	auth := services.InitAuth(firebase)
+	firestore := services.InitFirestore(firebase)
+	router := config.SetupRouter(auth, firestore)
+	w := httptest.NewRecorder()
+
+	household, _ := json.Marshal(models.Household{Name: "Test House"})
+	requestBody := bytes.NewBuffer(household)
+	req, _ := http.NewRequest("POST", "/household/new", requestBody)
+	router.ServeHTTP(w, req)
+
+	householdID := w.Body.String()
+
+	user, _ := json.Marshal(models.User{Name: "Test User", HouseholdID: householdID})
+	requestBody = bytes.NewBuffer(user)
+	req, _ = http.NewRequest("POST", "/user/new", requestBody)
+	router.ServeHTTP(w, req)
+
+	userID := w.Body.String()
+
+	taskModel := models.Task{
+		Name:        "Test Task",
+		UserID:      userID,
+		HouseholdID: householdID,
+		Date:        "20.01.2021",
+		Recurring:   false,
+		Done:        false,
+	}
+
+	task, _ := json.Marshal(taskModel)
+	requestBody = bytes.NewBuffer(task)
+
+	req, _ = http.NewRequest("POST", "/task/new", requestBody)
+	router.ServeHTTP(w, req)
+
+	req, _ = http.NewRequest("POST", "/task/finish", requestBody)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+}

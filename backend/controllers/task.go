@@ -99,7 +99,6 @@ func FinishTask(ctx *gin.Context) {
 		return
 	}
 
-	var ref *firestore.DocumentRef
 	_, err = client.Collection("household").Doc(task.HouseholdID).Collection("task").Doc(task.TaskID).Delete(ctx)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -107,5 +106,5 @@ func FinishTask(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, ref.ID)
+	ctx.JSON(http.StatusOK, task.TaskID)
 }

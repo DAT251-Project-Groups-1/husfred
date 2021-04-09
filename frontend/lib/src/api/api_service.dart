@@ -68,7 +68,8 @@ class ApiService with ChangeNotifier {
   }
 
   void postTask(Task task) async {
-    await _repository.postTask(task);
+    var taskID = await _repository.postTask(task);
+    task.taskID = taskID;
     _unfinishedTasks.add(task);
     notifyListeners();
   }
