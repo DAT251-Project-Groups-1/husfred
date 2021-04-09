@@ -40,6 +40,13 @@ func NewTask(ctx *gin.Context) {
 		return
 	}
 
+	_, err = client.Collection("household").Doc(task.HouseholdID).Collection("task").Doc(ref.ID).Update(ctx, []firestore.Update{
+		{
+			Path:  "TaskID",
+			Value: ref.ID,
+		},
+	})
+
 	ctx.JSON(http.StatusOK, ref.ID)
 }
 
