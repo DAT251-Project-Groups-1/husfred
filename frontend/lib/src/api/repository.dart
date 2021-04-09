@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart' as fa;
-import 'package:frontend/src/api/auth_service.dart';
 import 'package:frontend/src/models/household.dart';
 import 'package:frontend/src/models/task.dart';
 import 'package:frontend/src/models/user.dart';
@@ -29,7 +28,15 @@ class Repository {
       headers: {"Content-Type": "application/json"},
       body: json.encode(task),
     );
+    return json.decode(res.body);
+  }
 
+  Future<String> finishTask(Task task) async {
+    var res = await http.post(
+      Uri.https('$API_URL', '/task/finish'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(task),
+    );
     return json.decode(res.body);
   }
 
@@ -61,9 +68,13 @@ class Repository {
       },
     );
 
-    return (json.decode(res.body) as List)
-        .map((p) => Task.fromJson(p))
-        .toList();
+    try {
+      return (json.decode(res.body) as List)
+          .map((p) => Task.fromJson(p))
+          .toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   Future<List<User>> getLeaderboard(String householdID) async {
@@ -75,8 +86,12 @@ class Repository {
       },
     );
 
-    return (json.decode(res.body) as List)
-        .map((p) => User.fromJson(p))
-        .toList();
+    try {
+      return (json.decode(res.body) as List)
+          .map((p) => User.fromJson(p))
+          .toList();
+    } catch (_) {
+      return [];
+    }
   }
 }

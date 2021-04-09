@@ -1,4 +1,5 @@
 class Task {
+  String taskID = "";
   String name = "";
   String userID = "";
   String householdID = "";
@@ -15,6 +16,7 @@ class Task {
       required this.done});
 
   Map toJson() => {
+        'taskID': taskID,
         'name': name,
         'userID': userID,
         'householdID': householdID,
@@ -24,6 +26,7 @@ class Task {
       };
 
   Task.fromJson(Map<String, dynamic> json) {
+    taskID = json["TaskID"];
     name = json["Name"];
     userID = json["UserID"];
     householdID = json["HouseholdID"];

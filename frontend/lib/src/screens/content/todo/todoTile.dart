@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/models/task.dart';
+import 'package:provider/provider.dart';
 
 class TodoTile extends StatelessWidget {
   final Task task;
@@ -7,11 +9,13 @@ class TodoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var apiService = context.read<ApiService>();
+
     return Container(
       child: Dismissible(
         key: Key(task.name),
         onDismissed: (direction) {
-          //Mark task as done in db
+          apiService.finishTask(task);
         },
         background: Container(color: Colors.green),
         child: Card(

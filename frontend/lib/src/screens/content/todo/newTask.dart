@@ -24,7 +24,8 @@ class _NewTaskState extends State<NewTask> {
 
   @override
   Widget build(BuildContext context) {
-    var apiService = context.watch<ApiService>();
+    var apiService = context.read<ApiService>();
+    var authService = context.read<AuthService>();
 
     return Container(
       height: 1000,
@@ -65,7 +66,7 @@ class _NewTaskState extends State<NewTask> {
               },
             ),
           ),
-          Container(
+          /*Container(
             margin: EdgeInsets.all(20.0),
             child: Row(children: [
               Text("Recurring"),
@@ -74,19 +75,20 @@ class _NewTaskState extends State<NewTask> {
                 onChanged: (newValue) => setState(() => _recurring = newValue),
               ),
             ]),
-          ),
+          ),*/
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 apiService.postTask(
                   Task(
                       name: taskField.text,
-                      userID: "psiYjxJ0RQHatDFe9Fq7",
+                      userID: authService.user!.uid,
                       householdID: ApiService.householdID,
                       date: DateTime.now().toString(),
                       recurring: _recurring,
                       done: false),
                 );
+                Navigator.pop(context);
               }
             },
             child: Text("Create"),
