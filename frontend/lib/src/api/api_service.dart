@@ -9,45 +9,8 @@ class ApiService with ChangeNotifier {
   static String householdID = "";
 
   List<Task> _unfinishedTasks = [];
-  /*Task(
-        name: "Task1",
-        userID: "userID",
-        householdID: "householdID",
-        date: "12.02.21",
-        recurring: true,
-        done: false),
-    Task(
-        name: "Task2",
-        userID: "userID",
-        householdID: "householdID",
-        date: "12.02.21",
-        recurring: true,
-        done: false),
-    Task(
-        name: "Task3",
-        userID: "userID",
-        householdID: "householdID",
-        date: "12.02.21",
-        recurring: true,
-        done: false)
-  ];*/
 
   List<Task> _completedTasks = [];
-  /*Task(
-        name: "CompletedTask1",
-        userID: "userID",
-        householdID: "householdID",
-        date: "12.02.21",
-        recurring: true,
-        done: false),
-    Task(
-        name: "CompletedTask2",
-        userID: "userID",
-        householdID: "householdID",
-        date: "12.02.21",
-        recurring: true,
-        done: false),
-  ];*/
 
   List<User> _users = [];
 
@@ -63,7 +26,6 @@ class ApiService with ChangeNotifier {
 
   void postUser(User user) async {
     householdID = user.householdId;
-    print('hhID: ' + householdID);
     await _repository.postUser(user);
   }
 
