@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
 class ProgressRing extends StatelessWidget {
+  final double maxSize = 500;
   final double progress;
 
   const ProgressRing({required this.progress});
@@ -15,14 +18,14 @@ class ProgressRing extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return Container(
-                width: constraints.maxWidth * 2 / 3,
-                height: constraints.maxWidth * 2 / 3,
+                width: min(constraints.maxWidth * 2 / 3, maxSize),
+                height: min(constraints.maxWidth * 2 / 3, maxSize),
                 child: Stack(
                   children: [
                     Center(
                       child: Container(
-                        width: constraints.maxWidth * 0.2,
-                        height: constraints.maxWidth * 0.2,
+                        width: min(constraints.maxWidth * 0.2, maxSize * 0.2),
+                        height: min(constraints.maxWidth * 0.2, maxSize * 0.2),
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: Padding(
@@ -40,7 +43,8 @@ class ProgressRing extends StatelessWidget {
                     SizedBox.expand(
                       child: CustomPaint(
                         painter: RingPainter(
-                          strokeWidth: constraints.maxWidth * 0.15,
+                          strokeWidth:
+                              min(constraints.maxWidth * 0.15, maxSize * 0.15),
                           progress: progress,
                         ),
                       ),
