@@ -28,7 +28,7 @@ class ProgressRing extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "${progress * 100}%",
+                              "${(progress * 100).floor()}%",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600),

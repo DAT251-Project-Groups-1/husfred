@@ -15,6 +15,7 @@ class _TodoState extends State<Todo> {
   void initState() {
     super.initState();
     context.read<ApiService>().getTasks(false);
+    context.read<ApiService>().getTasks(true);
   }
 
   @override
@@ -37,7 +38,7 @@ class _TodoState extends State<Todo> {
       body: Column(
         children: [
           ProgressRing(
-            progress: 0.8,
+            progress: context.watch<ApiService>().taskProgress,
           ),
           Expanded(
             child: TodoList(),

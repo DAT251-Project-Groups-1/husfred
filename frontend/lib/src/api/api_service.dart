@@ -20,6 +20,14 @@ class ApiService with ChangeNotifier {
 
   List<Task> get completedTasks => _completedTasks;
 
+  double get taskProgress {
+    if (_completedTasks.isEmpty && _unfinishedTasks.isEmpty) {
+      return 0;
+    }
+    return _completedTasks.length /
+        (_completedTasks.length + _unfinishedTasks.length);
+  }
+
   Future<String> postHousehold(Household household) async {
     var result = await _repository.postHousehold(household);
     householdID = result;
@@ -52,7 +60,6 @@ class ApiService with ChangeNotifier {
     } else {
       _unfinishedTasks = tasks;
     }
-
     notifyListeners();
   }
 
