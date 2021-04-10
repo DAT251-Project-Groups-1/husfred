@@ -18,7 +18,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Husfred',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.lightGreen,
       ),
       home: Builder(
         builder: (context) {

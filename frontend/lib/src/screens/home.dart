@@ -21,20 +21,32 @@ class _HomeState extends State<Home> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<AuthService>().changeState(AuthState.Create);
-                },
-                child: Text("Create household"),
+              child: ConstrainedBox(
+              constraints: BoxConstraints.tightFor(
+                  width: 200,
+                  height: 40,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthService>().changeState(AuthState.Create);
+                  },
+                  child: Text("Create household"),
+                ),
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<AuthService>().changeState(AuthState.Join);
-                },
-                child: Text("Join household"),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tightFor(
+                  width: 200,
+                  height: 40,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthService>().changeState(AuthState.Join);
+                  },
+                  child: Text("Join household"),
+                ),
               ),
             ),
           ],

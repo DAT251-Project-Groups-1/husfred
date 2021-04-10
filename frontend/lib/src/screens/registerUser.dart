@@ -52,20 +52,26 @@ class _RegisterUserState extends State<RegisterUser> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    onPrimary: Colors.white,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tightFor(
+                    width: 200,
+                    height: 40,
                   ),
-                  // When the user presses the button, call on the backend to create a new
-                  // user with the specified name and assigned to specified household ID
-                  onPressed: () async {
-                    apiService.postUser(User(
-                        name: _controller.text, householdId: widget.household));
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      onPrimary: Colors.white,
+                    ),
+                    // When the user presses the button, call on the backend to create a new
+                    // user with the specified name and assigned to specified household ID
+                    onPressed: () async {
+                      apiService.postUser(User(
+                          name: _controller.text, householdId: widget.household));
 
-                    context.read<AuthService>().changeState(AuthState.SignedIn);
-                  },
-                  child: Text("Register"),
+                      context.read<AuthService>().changeState(AuthState.SignedIn);
+                    },
+                    child: Text("Register"),
+                  ),
                 ),
               )
             ],

@@ -48,14 +48,20 @@ class _JoinHouseholdState extends State<JoinHousehold> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                child: ElevatedButton(
-                  // When the user presses the button, show an alert dialog containing the
-                  // text that the user has entered into the text field.
-                  onPressed: () async {
-                    ApiService.householdID = _controller.text;
-                    context.read<AuthService>().changeState(AuthState.Register);
-                  },
-                  child: Text("Join"),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tightFor(
+                    width: 200,
+                    height: 40,
+                  ),
+                  child: ElevatedButton(
+                    // When the user presses the button, show an alert dialog containing the
+                    // text that the user has entered into the text field.
+                    onPressed: () async {
+                      ApiService.householdID = _controller.text;
+                      context.read<AuthService>().changeState(AuthState.Register);
+                    },
+                    child: Text("Join"),
+                  ),
                 ),
               ),
             ],

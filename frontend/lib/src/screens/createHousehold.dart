@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
 import 'package:frontend/src/models/household.dart';
-import 'package:frontend/src/screens/registerUser.dart';
 import 'package:provider/provider.dart';
 
 class CreateHousehold extends StatefulWidget {
@@ -51,17 +50,21 @@ class _CreateHouseholdState extends State<CreateHousehold> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                child: ElevatedButton(
-                  // When the user presses the button, show an alert dialog containing the
-                  // text that the user has entered into the text field.
-                  onPressed: () async {
-                    await apiService
-                        .postHousehold(Household(name: _controller.text));
-                    context
-                        .read<AuthService>()
-                        .changeState(AuthState.Register);
-                  },
-                  child: Text("Create"),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.tightFor(
+                    width: 200,
+                    height: 40,
+                  ),
+                  child: ElevatedButton(
+                    // When the user presses the button, show an alert dialog containing the
+                    // text that the user has entered into the text field.
+                    onPressed: () async {
+                      await apiService
+                          .postHousehold(Household(name: _controller.text));
+                      context.read<AuthService>().changeState(AuthState.Register);
+                    },
+                    child: Text("Create"),
+                  ),
                 ),
               ),
             ],
