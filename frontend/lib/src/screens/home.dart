@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
               child: ConstrainedBox(
-              constraints: BoxConstraints.tightFor(
+                constraints: BoxConstraints.tightFor(
                   width: 200,
                   height: 40,
                 ),

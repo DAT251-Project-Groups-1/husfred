@@ -1,5 +1,5 @@
-import 'package:frontend/src/api/repository.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/src/api/repository.dart';
 import 'package:frontend/src/models/household.dart';
 import 'package:frontend/src/models/task.dart';
 import 'package:frontend/src/models/user.dart';
@@ -15,7 +15,9 @@ class ApiService with ChangeNotifier {
   List<User> _users = [];
 
   List<Task> get unfinishedTasks => _unfinishedTasks;
+
   List<User> get users => _users;
+
   List<Task> get completedTasks => _completedTasks;
 
   Future<String> postHousehold(Household household) async {

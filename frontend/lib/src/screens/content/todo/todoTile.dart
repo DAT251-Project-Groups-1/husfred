@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 class TodoTile extends StatelessWidget {
   final Task task;
+
   TodoTile(this.task);
 
   @override

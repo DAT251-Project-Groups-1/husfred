@@ -58,7 +58,9 @@ class _JoinHouseholdState extends State<JoinHousehold> {
                     // text that the user has entered into the text field.
                     onPressed: () async {
                       ApiService.householdID = _controller.text;
-                      context.read<AuthService>().changeState(AuthState.Register);
+                      context
+                          .read<AuthService>()
+                          .changeState(AuthState.Register);
                     },
                     child: Text("Join"),
                   ),

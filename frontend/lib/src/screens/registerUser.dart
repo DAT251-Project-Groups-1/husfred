@@ -66,9 +66,12 @@ class _RegisterUserState extends State<RegisterUser> {
                     // user with the specified name and assigned to specified household ID
                     onPressed: () async {
                       apiService.postUser(User(
-                          name: _controller.text, householdId: widget.household));
+                          name: _controller.text,
+                          householdId: widget.household));
 
-                      context.read<AuthService>().changeState(AuthState.SignedIn);
+                      context
+                          .read<AuthService>()
+                          .changeState(AuthState.SignedIn);
                     },
                     child: Text("Register"),
                   ),

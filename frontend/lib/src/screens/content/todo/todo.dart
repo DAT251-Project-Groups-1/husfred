@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
+import 'package:frontend/src/screens/content/todo/newTask.dart';
 import 'package:frontend/src/screens/content/todo/todoList.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,17 @@ class _TodoState extends State<Todo> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Todo"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return NewTask();
+            },
+          );
+        },
       ),
       body: TodoList(),
     );

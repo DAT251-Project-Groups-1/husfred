@@ -61,7 +61,9 @@ class _CreateHouseholdState extends State<CreateHousehold> {
                     onPressed: () async {
                       await apiService
                           .postHousehold(Household(name: _controller.text));
-                      context.read<AuthService>().changeState(AuthState.Register);
+                      context
+                          .read<AuthService>()
+                          .changeState(AuthState.Register);
                     },
                     child: Text("Create"),
                   ),
