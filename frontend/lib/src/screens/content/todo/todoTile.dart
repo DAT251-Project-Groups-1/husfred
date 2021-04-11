@@ -23,7 +23,7 @@ class TodoTile extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.account_circle_outlined),
             title: Text(task.name),
-            subtitle: Text(task.date),
+            subtitle: Text(task.date.toString()),
           ),
         ),
       ),

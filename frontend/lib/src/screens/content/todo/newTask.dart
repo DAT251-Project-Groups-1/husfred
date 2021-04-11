@@ -84,7 +84,7 @@ class _NewTaskState extends State<NewTask> {
                       name: taskField.text,
                       userID: authService.user!.uid,
                       householdID: ApiService.householdID,
-                      date: DateTime.now().toString(),
+                      date: DateTime.now(),
                       recurring: _recurring,
                       done: false),
                 );

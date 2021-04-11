@@ -3,7 +3,7 @@ class Task {
   String name = "";
   String userID = "";
   String householdID = "";
-  String date = "";
+  DateTime? date;
   bool recurring = false;
   bool done = false;
 
@@ -20,7 +20,7 @@ class Task {
         'name': name,
         'userID': userID,
         'householdID': householdID,
-        'date': date,
+        'date': date?.millisecondsSinceEpoch ?? 0,
         'recurring': recurring,
         'done': done
       };
@@ -30,7 +30,7 @@ class Task {
     name = json["Name"];
     userID = json["UserID"];
     householdID = json["HouseholdID"];
-    date = json["Date"];
+    date = 0;//DateTime.fromMillisecondsSinceEpoch(json["Date"]);
     recurring = json["Recurring"];
     done = json["Done"];
   }
