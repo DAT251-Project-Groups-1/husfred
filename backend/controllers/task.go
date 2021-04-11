@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"cloud.google.com/go/firestore"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
@@ -61,8 +62,15 @@ func GetTasks(ctx *gin.Context) {
 	if q == "true" {
 		done = true
 	}
+	from, fromErr := strconv.Atoi(ctx.Param("from"))
+	to, toErr := strconv.Atoi(ctx.Param("to"))
 
-	iter := client.Collection("household").Doc(ctx.Param("householdID")).Collection("task").Where("Done", "==", done).Documents(ctx)
+	var iter *firestore.DocumentIterator
+	if fromErr == nil && toErr == nil {
+		iter = client.Collection("household").Doc(ctx.Param("householdID")).Collection("task").Where("Done", "==", done).OrderBy("Date", firestore.Asc).StartAt(from).EndAt(to).Documents(ctx)
+	} else {
+		iter = client.Collection("household").Doc(ctx.Param("householdID")).Collection("task").Where("Done", "==", done).Documents(ctx)
+	}
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {

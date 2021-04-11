@@ -5,10 +5,15 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"encoding/json"
+	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"fmt"
+	"github.com/DAT251-Project-Groups-1/husfred/config"
+	"github.com/DAT251-Project-Groups-1/husfred/services"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 
 	"github.com/DAT251-Project-Groups-1/husfred/models"
 )
@@ -16,9 +21,19 @@ import (
 type GoogleIdToken struct {
 	Expiresin    string `json:"expiresIn"`
 	Idtoken      string `json:"idToken"`
-	Isnewuser    bool `json:"isNewUser"`
+	Isnewuser    bool   `json:"isNewUser"`
 	Kind         string `json:"kind"`
 	Refreshtoken string `json:"refreshToken"`
+}
+
+func InitTesting() (*firebase.App, *auth.Client, *firestore.Client, *gin.Engine, *httptest.ResponseRecorder) {
+	firebase := services.InitFirebase()
+	auth := services.InitAuth(firebase)
+	firestore := services.InitFirestore(firebase)
+	router := config.SetupRouter(auth, firestore)
+	w := httptest.NewRecorder()
+
+	return firebase, auth, firestore, router, w
 }
 
 func CreateHousehold(client *firestore.Client) (*firestore.DocumentRef, error) {

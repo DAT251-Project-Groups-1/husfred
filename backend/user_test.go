@@ -6,21 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
-	"github.com/DAT251-Project-Groups-1/husfred/config"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
-	"github.com/DAT251-Project-Groups-1/husfred/services"
 	"github.com/go-playground/assert/v2"
 )
 
 func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, _, router, w := InitTesting()
 
 	postBody, _ := json.Marshal(models.User{Name: "Test User", HouseholdID: "Nonexisting"})
 	requestBody := bytes.NewBuffer(postBody)
@@ -32,11 +25,7 @@ func TestUserRegistrationShouldFailIfHouseholdDoesntExist(t *testing.T) {
 
 func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 	ctx := context.Background()
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, auth, firestore, router, w := InitTesting()
 
 	household, err := CreateHousehold(firestore)
 	if err != nil {
@@ -66,11 +55,7 @@ func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 }
 
 func TestGetUserFromHouseholdGetsUsers(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, auth, firestore, router, w := InitTesting()
 
 	household, err := CreateHousehold(firestore)
 	if err != nil {

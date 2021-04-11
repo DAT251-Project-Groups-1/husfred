@@ -5,7 +5,7 @@ type Task struct {
 	Name        string `binding:"required"`
 	UserID      string `binding:"required"`
 	HouseholdID string `binding:"required"`
-	Date        string
+	Date       	int
 	Recurring   bool
 	Done        bool
 }

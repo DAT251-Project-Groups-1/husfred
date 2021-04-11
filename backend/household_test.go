@@ -5,20 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
-	"github.com/DAT251-Project-Groups-1/husfred/config"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
-	"github.com/DAT251-Project-Groups-1/husfred/services"
 	"github.com/go-playground/assert/v2"
 )
 
 func TestNewHousehold(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
+	_, _, _, router, w := InitTesting()
 
 	body := models.Household{
 		Name: "Test",
@@ -27,7 +21,6 @@ func TestNewHousehold(t *testing.T) {
 	postBody, _ := json.Marshal(body)
 	requestBody := bytes.NewBuffer(postBody)
 
-	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("POST", "/household/new", requestBody)
 	router.ServeHTTP(w, req)
 
@@ -35,11 +28,7 @@ func TestNewHousehold(t *testing.T) {
 }
 
 func TestGetHouseholdById(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, _, router, w := InitTesting()
 
 	household, _ := json.Marshal(models.Household{Name: "Test Get House"})
 	requestBody := bytes.NewBuffer(household)
@@ -56,11 +45,7 @@ func TestGetHouseholdById(t *testing.T) {
 }
 
 func TestGetHouseholdShouldFailWithoutExistingID(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, _, router, w := InitTesting()
 
 	req, _ := http.NewRequest("GET", "/household/someID", nil)
 	router.ServeHTTP(w, req)

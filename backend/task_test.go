@@ -5,21 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
-	"github.com/DAT251-Project-Groups-1/husfred/config"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
-	"github.com/DAT251-Project-Groups-1/husfred/services"
 	"github.com/go-playground/assert/v2"
 )
 
 func TestNewTaskShouldBeCreatedWithExsistingUserAndHousehold(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, _, router, w := InitTesting()
 
 	household, _ := json.Marshal(models.Household{Name: "Test House"})
 	requestBody := bytes.NewBuffer(household)
@@ -39,7 +32,7 @@ func TestNewTaskShouldBeCreatedWithExsistingUserAndHousehold(t *testing.T) {
 		Name:        "Test Task",
 		UserID:      userID,
 		HouseholdID: householdID,
-		Date:        "20.01.2021",
+		Date:        932489234,
 		Recurring:   false,
 		Done:        false,
 	})
@@ -52,17 +45,13 @@ func TestNewTaskShouldBeCreatedWithExsistingUserAndHousehold(t *testing.T) {
 }
 
 func TestNewTaskShouldNotBeCreatedWithoutExsistingUserAndHousehold(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, _, router, w := InitTesting()
 
 	task, _ := json.Marshal(models.Task{
 		Name:        "Test Task",
 		UserID:      "Nonexisting",
 		HouseholdID: "Nonexisting",
-		Date:        "20.01.2021",
+		Date:        322493,
 		Recurring:   false,
 		Done:        false,
 	})
@@ -75,11 +64,7 @@ func TestNewTaskShouldNotBeCreatedWithoutExsistingUserAndHousehold(t *testing.T)
 }
 
 func TestGetUnfinishedTasks(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, firestore, router, w := InitTesting()
 
 	household, err := CreateHousehold(firestore)
 	if err != nil {
@@ -106,11 +91,7 @@ func TestGetUnfinishedTasks(t *testing.T) {
 }
 
 func TestFinishTask(t *testing.T) {
-	firebase := services.InitFirebase()
-	auth := services.InitAuth(firebase)
-	firestore := services.InitFirestore(firebase)
-	router := config.SetupRouter(auth, firestore)
-	w := httptest.NewRecorder()
+	_, _, _, router, w := InitTesting()
 
 	household, _ := json.Marshal(models.Household{Name: "Test House"})
 	requestBody := bytes.NewBuffer(household)
@@ -130,7 +111,7 @@ func TestFinishTask(t *testing.T) {
 		Name:        "Test Task",
 		UserID:      userID,
 		HouseholdID: householdID,
-		Date:        "20.01.2021",
+		Date:        3123412423,
 		Recurring:   false,
 		Done:        false,
 	}
