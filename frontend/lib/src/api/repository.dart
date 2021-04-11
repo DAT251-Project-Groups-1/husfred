@@ -26,7 +26,7 @@ class Repository {
     var res = await http.post(
       Uri.https('$API_URL', '/task/new'),
       headers: {"Content-Type": "application/json"},
-      body: json.encode(task),
+      body: json.encode(task.toJson()),
     );
     return json.decode(res.body);
   }
@@ -72,7 +72,8 @@ class Repository {
       return (json.decode(res.body) as List)
           .map((p) => Task.fromJson(p))
           .toList();
-    } catch (_) {
+    } catch (e) {
+      print(e);
       return [];
     }
   }
