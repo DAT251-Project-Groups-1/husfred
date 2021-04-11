@@ -30,7 +30,7 @@ class Task {
     name = json["Name"];
     userID = json["UserID"];
     householdID = json["HouseholdID"];
-    date = 0;//DateTime.fromMillisecondsSinceEpoch(json["Date"]);
+    date = DateTime.fromMillisecondsSinceEpoch(json["Date"]);
     recurring = json["Recurring"];
     done = json["Done"];
   }
