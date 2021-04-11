@@ -78,17 +78,59 @@ func TestGetUnfinishedTasks(t *testing.T) {
 		return
 	}
 
-	task, _ := json.Marshal(models.Task{Name: "Test Task 1", HouseholdID: household.ID, Done: false, UserID: user.ID})
-	requestBody := bytes.NewBuffer(task)
-	req, _ := http.NewRequest("POST", "/task/new", requestBody)
-	router.ServeHTTP(w, req)
+	_, err = CreateTask(firestore, household, user, 10, false)
+	if err != nil {
+		t.Error("Failed creation of task")
+		return
+	}
 
 	url := fmt.Sprintf("/task/%s?done=false", household.ID)
-	req, _ = http.NewRequest("GET", url, requestBody)
+	req, _ := http.NewRequest("GET", url, nil)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
 }
+
+/**
+func TestGetUnfinishedTasksInRange(t *testing.T) {
+	_, _, firestore, router, w := InitTesting()
+
+	household, err := CreateHousehold(firestore)
+	if err != nil {
+		t.Error("Failed creation of household")
+		return
+	}
+
+	user, err := CreateUser(firestore, household)
+	if err != nil {
+		t.Error("Failed creation of household")
+		return
+	}
+
+	_, err = CreateTask(firestore, household, user, 0, false)
+	if err != nil {
+		t.Error("Failed creation of task")
+		return
+	}
+
+	_, err = CreateTask(firestore, household, user, 1, false)
+	if err != nil {
+		t.Error("Failed creation of task")
+		return
+	}
+
+	url := fmt.Sprintf("/task/%s?done=false?from=1?to=2", household.ID)
+	req, _ := http.NewRequest("GET", url, nil)
+	router.ServeHTTP(w, req)
+
+	var tasks []models.Task
+
+	_ = json.Unmarshal(w.Body.Bytes(), &tasks)
+
+	fmt.Println(len(tasks))
+	assert.Equal(t, 1, len(tasks))
+}
+**/
 
 func TestFinishTask(t *testing.T) {
 	_, _, _, router, w := InitTesting()

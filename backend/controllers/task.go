@@ -62,8 +62,8 @@ func GetTasks(ctx *gin.Context) {
 	if q == "true" {
 		done = true
 	}
-	from, fromErr := strconv.Atoi(ctx.Param("from"))
-	to, toErr := strconv.Atoi(ctx.Param("to"))
+	from, fromErr := strconv.Atoi(ctx.DefaultQuery("from", "unknown"))
+	to, toErr := strconv.Atoi(ctx.DefaultQuery("to", "unknown"))
 
 	var iter *firestore.DocumentIterator
 	if fromErr == nil && toErr == nil {

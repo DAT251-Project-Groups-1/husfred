@@ -41,12 +41,8 @@ func TestUserRegistrationShouldPassIfHouseholdExists(t *testing.T) {
 	req.Header.Set("Authorization", bearer)
 	router.ServeHTTP(w, req)
 
-	fmt.Println(w.Body.String())
-
 	var userId string
 	err = json.Unmarshal(w.Body.Bytes(), &userId)
-	fmt.Println("User id test")
-	fmt.Println(userId)
 	snapshot, err := firestore.Collection("user").Doc(userId).Get(ctx)
 	if err != nil {
 		fmt.Println(err)

@@ -50,6 +50,13 @@ func CreateUser(client *firestore.Client, hh *firestore.DocumentRef) (*firestore
 	return ref, err
 }
 
+func CreateTask(client *firestore.Client, hh *firestore.DocumentRef, user *firestore.DocumentRef, date int, done bool) (*firestore.DocumentRef, error) {
+	ctx := context.Background()
+	task := models.Task{Name: "Test User", HouseholdID: hh.ID, UserID: user.ID, Date: date, Recurring: false, Done: done}
+	ref, _, err := client.Collection("household").Doc(hh.ID).Collection("task").Add(ctx, task)
+	return ref, err
+}
+
 func CreateFirebaseAuthUser(auth *auth.Client) string {
 	ctx := context.Background()
 	token, _ := auth.CustomToken(ctx, "testUser")
