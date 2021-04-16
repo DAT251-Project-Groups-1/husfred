@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/models/user.dart';
 
 class LeaderboardTile extends StatelessWidget {
-  User user;
+  final User user;
 
   LeaderboardTile(this.user);
 

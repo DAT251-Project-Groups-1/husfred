@@ -73,7 +73,6 @@ class Repository {
           .map((p) => Task.fromJson(p))
           .toList();
     } catch (e) {
-      print(e);
       return [];
     }
   }
