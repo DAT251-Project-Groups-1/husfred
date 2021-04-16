@@ -8,5 +8,5 @@ type Task struct {
 	Date        int `binding:"required"`
 	Points		int `binding:"required"`
 	Recurring   bool
-	Done        bool `binding:"required"`
+	Done        bool
 }
