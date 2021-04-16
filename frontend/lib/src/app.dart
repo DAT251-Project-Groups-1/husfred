@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
 import 'package:frontend/src/screens/createHousehold.dart';
@@ -20,6 +21,15 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightGreen,
       ),
+      locale: Locale('nb'),
+      supportedLocales: const <Locale>[
+        Locale('nb'),
+      ],
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: Builder(
         builder: (context) {
           return FutureBuilder<FirebaseApp>(

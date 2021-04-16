@@ -1,3 +1,4 @@
+import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
@@ -12,13 +13,12 @@ class NewTask extends StatefulWidget {
 class _NewTaskState extends State<NewTask> {
   final _formKey = GlobalKey<FormState>();
   final taskField = TextEditingController();
-  final dateField = TextEditingController();
+  DateTime dateTime = DateTime.now();
   bool _recurring = false;
 
   @override
   void dispose() {
     taskField.dispose();
-    dateField.dispose();
     super.dispose();
   }
 
@@ -51,18 +51,17 @@ class _NewTaskState extends State<NewTask> {
           ),
           Container(
             margin: EdgeInsets.all(20.0),
-            child: TextFormField(
-              controller: dateField,
+            child: DateTimeFormField(
               decoration: InputDecoration(
                 labelText: "Date",
-                prefixIcon: Icon(Icons.date_range),
+                prefixIcon: Icon(Icons.calendar_today_outlined),
                 border: OutlineInputBorder(),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please provide a date';
-                }
-                return null;
+              validator: (value) => value == null ? "Please provide date" : null,
+              onDateSelected: (DateTime date) {
+                setState(() {
+                  dateTime = date;
+                });
               },
             ),
           ),
@@ -81,12 +80,13 @@ class _NewTaskState extends State<NewTask> {
               if (_formKey.currentState!.validate()) {
                 apiService.postTask(
                   Task(
-                      name: taskField.text,
-                      userID: authService.user!.uid,
-                      householdID: ApiService.householdID,
-                      date: DateTime.now(),
-                      recurring: _recurring,
-                      done: false),
+                    name: taskField.text,
+                    userID: authService.user!.uid,
+                    householdID: ApiService.householdID,
+                    date: dateTime,
+                    recurring: _recurring,
+                    done: false,
+                  ),
                 );
                 Navigator.pop(context);
               }
