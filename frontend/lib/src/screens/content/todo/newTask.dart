@@ -13,8 +13,9 @@ class NewTask extends StatefulWidget {
 class _NewTaskState extends State<NewTask> {
   final _formKey = GlobalKey<FormState>();
   final taskField = TextEditingController();
+  final pointsField = TextEditingController();
   DateTime dateTime = DateTime.now();
-  bool _recurring = false;
+  //bool _recurring = false;
 
   @override
   void dispose() {
@@ -25,7 +26,6 @@ class _NewTaskState extends State<NewTask> {
   @override
   Widget build(BuildContext context) {
     var apiService = context.read<ApiService>();
-    var authService = context.read<AuthService>();
 
     return Container(
       height: 1000,
@@ -57,11 +57,29 @@ class _NewTaskState extends State<NewTask> {
                 prefixIcon: Icon(Icons.calendar_today_outlined),
                 border: OutlineInputBorder(),
               ),
-              validator: (value) => value == null ? "Please provide date" : null,
+              validator: (value) =>
+                  value == null ? "Please provide date" : null,
               onDateSelected: (DateTime date) {
                 setState(() {
                   dateTime = date;
                 });
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(20.0),
+            child: TextFormField(
+              controller: pointsField,
+              decoration: InputDecoration(
+                labelText: "Points",
+                prefixIcon: Icon(Icons.star_border_rounded),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please some points';
+                }
+                return null;
               },
             ),
           ),
@@ -81,11 +99,10 @@ class _NewTaskState extends State<NewTask> {
                 apiService.postTask(
                   Task(
                     name: taskField.text,
-                    userID: authService.user!.uid,
                     householdID: ApiService.householdID,
                     date: dateTime,
-                    recurring: _recurring,
                     done: false,
+                    points: int.parse(pointsField.text),
                   ),
                 );
                 Navigator.pop(context);
