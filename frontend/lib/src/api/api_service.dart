@@ -42,7 +42,6 @@ class ApiService with ChangeNotifier {
   void postTask(Task task) async {
     var taskID = await _repository.postTask(task);
     task.taskID = taskID;
-    _unfinishedTasks.add(task);
     notifyListeners();
   }
 
@@ -53,8 +52,8 @@ class ApiService with ChangeNotifier {
     notifyListeners();
   }
 
-  getTasks(bool done) async {
-    var tasks = await _repository.getTasks(householdID, done);
+  getTasks(bool done, [DateTime? from, DateTime? to]) async {
+    var tasks = await _repository.getTasks(householdID, done, from, to);
     if (done) {
       _completedTasks = tasks;
     } else {
