@@ -23,7 +23,6 @@ class Task {
         'userID': userID,
         'householdID': householdID,
         'date': date?.millisecondsSinceEpoch ?? 0,
-        'recurring': recurring,
         'done': done,
         'votes': votes,
         'points': points
@@ -35,9 +34,8 @@ class Task {
     userID = json["UserID"];
     householdID = json["HouseholdID"];
     date = DateTime.fromMillisecondsSinceEpoch(json["Date"]);
-    recurring = json["Recurring"];
     done = json["Done"];
-    votes = List.from(json["Votes"]);
+    //votes = List<String>.from(json["Votes"]);
     points = json['Points'];
   }
 }
