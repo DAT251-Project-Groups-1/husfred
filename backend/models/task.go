@@ -8,4 +8,5 @@ type Task struct {
 	Date        int
 	Recurring   bool
 	Done        bool
+	Votes       []string
 }
