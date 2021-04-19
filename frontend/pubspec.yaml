@@ -10,12 +10,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   http: ^0.13.1
+  intl: ^0.17.0
   provider: ^5.0.0
-  firebase_core: ^1.0.2
-  firebase_auth: ^1.0.1
-  cloud_firestore: ^1.0.2
+  firebase_core: ^1.0.3
+  firebase_auth: ^1.1.0
+  cloud_firestore: ^1.0.5
   cupertino_icons: ^1.0.2
+
+  date_field: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -21,12 +21,6 @@ func NewTask(ctx *gin.Context) {
 		return
 	}
 
-	_, err = client.Collection("user").Doc(task.UserID).Get(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "User does not exist"})
-		return
-	}
-
 	_, err = client.Collection("household").Doc(task.HouseholdID).Get(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Household does not exist"})
@@ -102,7 +96,12 @@ func FinishTask(ctx *gin.Context) {
 		return
 	}
 
-	_, err = client.Collection("user").Doc(task.UserID).Get(ctx)
+	_, err = client.Collection("user").Doc(task.UserID).Update(ctx, []firestore.Update{
+		{
+			Path: "Points",
+			Value: firestore.Increment(task.Points),
+		},
+	})
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "User does not exist"})
 		return

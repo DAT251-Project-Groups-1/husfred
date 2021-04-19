@@ -91,7 +91,6 @@ func TestGetUnfinishedTasks(t *testing.T) {
 	assert.Equal(t, 200, w.Code)
 }
 
-/**
 func TestGetUnfinishedTasksInRange(t *testing.T) {
 	_, _, firestore, router, w := InitTesting()
 
@@ -119,7 +118,7 @@ func TestGetUnfinishedTasksInRange(t *testing.T) {
 		return
 	}
 
-	url := fmt.Sprintf("/task/%s?done=false?from=1?to=2", household.ID)
+	url := fmt.Sprintf("/task/%s?done=false&from=1&to=2", household.ID)
 	req, _ := http.NewRequest("GET", url, nil)
 	router.ServeHTTP(w, req)
 
@@ -127,10 +126,8 @@ func TestGetUnfinishedTasksInRange(t *testing.T) {
 
 	_ = json.Unmarshal(w.Body.Bytes(), &tasks)
 
-	fmt.Println(len(tasks))
 	assert.Equal(t, 1, len(tasks))
 }
-**/
 
 func TestFinishTask(t *testing.T) {
 	_, _, _, router, w := InitTesting()

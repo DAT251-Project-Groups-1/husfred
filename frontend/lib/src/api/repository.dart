@@ -53,18 +53,26 @@ class Repository {
     return json.decode(res.body);
   }
 
-  Future<List<Task>> getTasks(String householdID, bool done) async {
+  Future<List<Task>> getTasks(String householdID, bool done,
+      [DateTime? from, DateTime? to]) async {
     fa.IdTokenResult idTokenResult =
         await auth.currentUser!.getIdTokenResult(true);
 
     var queryParams = {
       'done': done.toString(),
     };
+    if (from != null && to != null) {
+      queryParams = {
+        ...queryParams,
+        'from': from.millisecondsSinceEpoch.toString(),
+        'to': to.millisecondsSinceEpoch.toString(),
+      };
+    }
 
-    var res = await http.get(
+    http.Response res = await http.get(
       Uri.https('$API_URL', 'task/$householdID', queryParams),
       headers: <String, String>{
-        'Authorization': 'Bearer ${idTokenResult.token}'
+        'Authorization': 'Bearer ${idTokenResult.token}',
       },
     );
 
@@ -75,7 +83,6 @@ class Repository {
           .map((p) => Task.fromJson(p))
           .toList();
     } catch (e) {
-      print("error beybi");
       return [];
     }
   }

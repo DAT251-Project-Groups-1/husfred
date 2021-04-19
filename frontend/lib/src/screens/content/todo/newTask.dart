@@ -1,3 +1,4 @@
+import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
@@ -12,20 +13,19 @@ class NewTask extends StatefulWidget {
 class _NewTaskState extends State<NewTask> {
   final _formKey = GlobalKey<FormState>();
   final taskField = TextEditingController();
-  final dateField = TextEditingController();
-  bool _recurring = false;
+  final pointsField = TextEditingController();
+  DateTime dateTime = DateTime.now();
+  //bool _recurring = false;
 
   @override
   void dispose() {
     taskField.dispose();
-    dateField.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var apiService = context.read<ApiService>();
-    var authService = context.read<AuthService>();
 
     return Container(
       height: 1000,
@@ -51,16 +51,33 @@ class _NewTaskState extends State<NewTask> {
           ),
           Container(
             margin: EdgeInsets.all(20.0),
-            child: TextFormField(
-              controller: dateField,
+            child: DateTimeFormField(
               decoration: InputDecoration(
                 labelText: "Date",
-                prefixIcon: Icon(Icons.date_range),
+                prefixIcon: Icon(Icons.calendar_today_outlined),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) =>
+                  value == null ? "Please provide date" : null,
+              onDateSelected: (DateTime date) {
+                setState(() {
+                  dateTime = date;
+                });
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(20.0),
+            child: TextFormField(
+              controller: pointsField,
+              decoration: InputDecoration(
+                labelText: "Points",
+                prefixIcon: Icon(Icons.star_border_rounded),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please provide a date';
+                  return 'Please some points';
                 }
                 return null;
               },
@@ -82,11 +99,10 @@ class _NewTaskState extends State<NewTask> {
                 apiService.postTask(
                   Task(
                       name: taskField.text,
-                      userID: authService.user!.uid,
                       householdID: ApiService.householdID,
-                      date: DateTime.now(),
-                      recurring: _recurring,
+                      date: dateTime,
                       done: false,
+                      points: int.parse(pointsField.text),
                       votes: []),
                 );
                 Navigator.pop(context);

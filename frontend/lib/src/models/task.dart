@@ -7,14 +7,14 @@ class Task {
   bool recurring = false;
   bool done = false;
   List<String> votes = [];
+  int points = 0;
 
   Task(
       {required this.name,
-      required this.userID,
       required this.householdID,
       required this.date,
-      required this.recurring,
       required this.done,
+      required this.points,
       required this.votes});
 
   Map toJson() => {
@@ -25,11 +25,11 @@ class Task {
         'date': date?.millisecondsSinceEpoch ?? 0,
         'recurring': recurring,
         'done': done,
-        'votes': votes
+        'votes': votes,
+        'points': points
       };
 
   Task.fromJson(Map<String, dynamic> json) {
-    print(json);
     taskID = json["TaskID"];
     name = json["Name"];
     userID = json["UserID"];
@@ -38,5 +38,6 @@ class Task {
     recurring = json["Recurring"];
     done = json["Done"];
     votes = List.from(json["Votes"]);
+    points = json['Points'];
   }
 }
