@@ -98,12 +98,12 @@ class _NewTaskState extends State<NewTask> {
               if (_formKey.currentState!.validate()) {
                 apiService.postTask(
                   Task(
-                    name: taskField.text,
-                    householdID: ApiService.householdID,
-                    date: dateTime,
-                    done: false,
-                    points: int.parse(pointsField.text),
-                  ),
+                      name: taskField.text,
+                      householdID: ApiService.householdID,
+                      date: dateTime,
+                      done: false,
+                      points: int.parse(pointsField.text),
+                      votes: []),
                 );
                 Navigator.pop(context);
               }

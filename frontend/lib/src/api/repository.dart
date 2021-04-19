@@ -42,7 +42,7 @@ class Repository {
 
   Future<String> postUser(User user) async {
     fa.IdTokenResult idTokenResult =
-    await auth.currentUser!.getIdTokenResult(true);
+        await auth.currentUser!.getIdTokenResult(true);
     var res = await http.post(Uri.https('$API_URL', 'user/new'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -56,7 +56,7 @@ class Repository {
   Future<List<Task>> getTasks(String householdID, bool done,
       [DateTime? from, DateTime? to]) async {
     fa.IdTokenResult idTokenResult =
-    await auth.currentUser!.getIdTokenResult(true);
+        await auth.currentUser!.getIdTokenResult(true);
 
     var queryParams = {
       'done': done.toString(),
@@ -75,6 +75,8 @@ class Repository {
         'Authorization': 'Bearer ${idTokenResult.token}',
       },
     );
+
+    print("res: " + res.body.toString());
 
     try {
       return (json.decode(res.body) as List)

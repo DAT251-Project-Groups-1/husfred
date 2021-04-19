@@ -13,7 +13,6 @@ class TodoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     var apiService = context.read<ApiService>();
     var authService = context.read<AuthService>();
-
     return Container(
       child: Dismissible(
         key: Key(task.name),

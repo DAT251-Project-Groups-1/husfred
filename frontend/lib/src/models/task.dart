@@ -6,6 +6,7 @@ class Task {
   DateTime? date;
   bool recurring = false;
   bool done = false;
+  List<String> votes = [];
   int points = 0;
 
   Task(
@@ -13,7 +14,8 @@ class Task {
       required this.householdID,
       required this.date,
       required this.done,
-      required this.points});
+      required this.points,
+      required this.votes});
 
   Map toJson() => {
         'taskID': taskID,
@@ -21,8 +23,8 @@ class Task {
         'userID': userID,
         'householdID': householdID,
         'date': date?.millisecondsSinceEpoch ?? 0,
-        'recurring': recurring,
         'done': done,
+        'votes': votes,
         'points': points
       };
 
@@ -32,8 +34,8 @@ class Task {
     userID = json["UserID"];
     householdID = json["HouseholdID"];
     date = DateTime.fromMillisecondsSinceEpoch(json["Date"]);
-    recurring = json["Recurring"];
     done = json["Done"];
+    //votes = List<String>.from(json["Votes"]);
     points = json['Points'];
   }
 }

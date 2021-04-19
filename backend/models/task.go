@@ -9,4 +9,5 @@ type Task struct {
 	Points		int `binding:"required"`
 	Recurring   bool
 	Done        bool
+	Votes       []string
 }
