@@ -68,12 +68,14 @@ class Repository {
       },
     );
 
+    print("res: " + res.body.toString());
+
     try {
       return (json.decode(res.body) as List)
           .map((p) => Task.fromJson(p))
           .toList();
     } catch (e) {
-      print(e);
+      print("error beybi");
       return [];
     }
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/api/auth_service.dart';
 import 'package:frontend/src/models/task.dart';
+import 'package:provider/provider.dart';
 
 class FeedTile extends StatefulWidget {
   final Task task;
@@ -11,10 +13,10 @@ class FeedTile extends StatefulWidget {
 }
 
 class _FeedTileState extends State<FeedTile> {
-  bool hasVoted = false;
-
   @override
   Widget build(BuildContext context) {
+    var authService = context.read<AuthService>();
+    bool hasVoted = (widget.task.votes).contains(authService.user!.uid);
     return Card(
         child: ListTile(
             title: Text(widget.task.name),
@@ -24,7 +26,7 @@ class _FeedTileState extends State<FeedTile> {
               children: <Widget>[
                 Text(
                   // Visual hack, obv fix when adding backend
-                  hasVoted ? "1" : "0",
+                  (widget.task.votes.length).toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
                 ),

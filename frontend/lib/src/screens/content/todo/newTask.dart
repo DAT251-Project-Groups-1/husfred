@@ -86,7 +86,8 @@ class _NewTaskState extends State<NewTask> {
                       householdID: ApiService.householdID,
                       date: DateTime.now(),
                       recurring: _recurring,
-                      done: false),
+                      done: false,
+                      votes: []),
                 );
                 Navigator.pop(context);
               }
