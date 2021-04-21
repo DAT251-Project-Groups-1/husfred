@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
+import 'package:frontend/src/api/storage_service.dart';
 import 'package:frontend/src/app.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => AuthService(),
+        ),
+        Provider(
+          create: (_) => StorageService(),
         )
       ],
       child: App(),

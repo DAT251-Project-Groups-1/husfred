@@ -36,7 +36,7 @@ class AuthService with ChangeNotifier {
             }
           },
         ).catchError((err) {
-          //Ignore
+          changeState(AuthState.Initialized);
         });
       }
     });
