@@ -16,6 +16,7 @@ class RegisterUser extends StatefulWidget {
 
 class _RegisterUserState extends State<RegisterUser> {
   late TextEditingController _controller;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -44,10 +45,15 @@ class _RegisterUserState extends State<RegisterUser> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                child: TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(labelText: "Name"),
-                  onSubmitted: (String value) async {},
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _controller,
+                    decoration: InputDecoration(labelText: "Name"),
+                    validator: (String? value) => value == null || value.isEmpty
+                        ? "Vennligst fyll inn"
+                        : null,
+                  ),
                 ),
               ),
               Padding(
@@ -65,13 +71,26 @@ class _RegisterUserState extends State<RegisterUser> {
                     // When the user presses the button, call on the backend to create a new
                     // user with the specified name and assigned to specified household ID
                     onPressed: () async {
-                      apiService.postUser(User(
-                          name: _controller.text,
-                          householdId: widget.household));
-
-                      context
-                          .read<AuthService>()
-                          .changeState(AuthState.SignedIn);
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          apiService.postUser(
+                            User(
+                              name: _controller.text,
+                              householdId: widget.household,
+                            ),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("En feil oppstod"),
+                            ),
+                          );
+                          return;
+                        }
+                        context
+                            .read<AuthService>()
+                            .changeState(AuthState.SignedIn);
+                      }
                     },
                     child: Text("Register"),
                   ),

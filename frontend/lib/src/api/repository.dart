@@ -76,8 +76,6 @@ class Repository {
       },
     );
 
-    print("res: " + res.body.toString());
-
     try {
       return (json.decode(res.body) as List)
           .map((p) => Task.fromJson(p))
