@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,7 +19,7 @@ class RegisterUser extends StatefulWidget {
 class _RegisterUserState extends State<RegisterUser> {
   late TextEditingController _controller;
   final _formKey = GlobalKey<FormState>();
-  File? file;
+  FilePickerResult? file;
 
   @override
   void initState() {
@@ -57,8 +55,7 @@ class _RegisterUserState extends State<RegisterUser> {
                   child: TextFormField(
                     controller: _controller,
                     decoration: InputDecoration(labelText: "Name"),
-                    validator: (String? value) =>
-                    value == null || value.isEmpty
+                    validator: (String? value) => value == null || value.isEmpty
                         ? "Vennligst fyll inn"
                         : null,
                   ),
@@ -66,19 +63,16 @@ class _RegisterUserState extends State<RegisterUser> {
               ),
               ListTile(
                 title: Text(
-                  file == null ? "Last opp fil" : file!
-                      .path
-                      .split("/")
-                      .last,
+                  file == null ? "Last opp fil" : file!.files.single.name!,
                 ),
                 trailing: Icon(Icons.file_upload),
                 onTap: () async {
                   FilePickerResult? result =
-                  await FilePicker.platform.pickFiles(type: FileType.image);
+                      await FilePicker.platform.pickFiles(type: FileType.image);
 
                   if (result != null) {
                     setState(() {
-                      file = File(result.files.first.path!);
+                      file = result;
                     });
                   }
                 },
@@ -100,19 +94,22 @@ class _RegisterUserState extends State<RegisterUser> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate() && file != null) {
                         try {
-                          String downloadUrl = await storageService.uploadAvatar(
-                            widget.household, authService.user!.uid, file!);
+                          await storageService.uploadAvatar(
+                            widget.household,
+                            authService.user!.uid,
+                            file!.files.single.bytes!,
+                          );
                           apiService.postUser(
                             User(
                               name: _controller.text,
                               householdId: widget.household,
-                              storageUrl: downloadUrl,
                             ),
                           );
                         } catch (e) {
+                          print(e);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("En feil oppstod"),
+                              content: Text("En feil oppstod $e"),
                             ),
                           );
                           return;
