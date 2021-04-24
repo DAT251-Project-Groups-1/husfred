@@ -98,6 +98,7 @@ class _RegisterUserState extends State<RegisterUser> {
                             widget.household,
                             authService.user!.uid,
                             file!.files.single.bytes!,
+                            file!.files.single.name!,
                           );
                           apiService.postUser(
                             User(
