@@ -72,8 +72,8 @@ func DeleteUser(ctx *gin.Context) {
 
 	_, err := client.Collection("user").Doc(userRecord.UID).Delete(ctx)
 	if err != nil {
-		// Handle any errors in an appropriate way, such as returning them.
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	ctx.JSON(http.StatusOK, nil)
 }
