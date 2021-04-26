@@ -65,3 +65,15 @@ func GetUsersInHousehold(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, users)
 }
+
+func DeleteUser(ctx *gin.Context) {
+	client := ctx.MustGet("firestore").(*firestore.Client)
+	userRecord := ctx.MustGet("user").(*auth.UserRecord)
+
+	_, err := client.Collection("user").Doc(userRecord.UID).Delete(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, nil)
+}

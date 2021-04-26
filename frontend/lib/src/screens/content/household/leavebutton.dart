@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/api/api_service.dart';
+import 'package:frontend/src/api/auth_service.dart';
+import 'package:frontend/src/models/user.dart';
+import 'package:provider/provider.dart';
 
 class LeaveButton extends StatelessWidget {
   @override
@@ -16,6 +20,7 @@ class LeaveButton extends StatelessWidget {
 }
 
 showAlertDialog(BuildContext context) {
+  ApiService apiService = context.watch<ApiService>();
   // set up the buttons
   Widget cancelButton = TextButton(
     child: Text("Cancel"),
@@ -25,7 +30,10 @@ showAlertDialog(BuildContext context) {
   );
   Widget leaveButton = TextButton(
     child: Text("Leave"),
-    onPressed: () {},
+    onPressed: () async {
+      apiService.deleteUser();
+      context.read<AuthService>().changeState(AuthState.Initialized);
+    },
   );
 
   // set up the AlertDialog

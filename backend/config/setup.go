@@ -26,6 +26,7 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 	user.Use(middleware.Auth)
 	user.POST("/new", controllers.NewUser)
 	user.GET("/household/:id", controllers.GetUsersInHousehold)
+	user.DELETE("", controllers.DeleteUser)
 
 	task := router.Group("/task")
 	task.POST("/new", controllers.NewTask)
