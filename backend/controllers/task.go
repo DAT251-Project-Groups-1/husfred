@@ -98,7 +98,7 @@ func FinishTask(ctx *gin.Context) {
 
 	_, err = client.Collection("user").Doc(task.UserID).Update(ctx, []firestore.Update{
 		{
-			Path: "Points",
+			Path:  "Points",
 			Value: firestore.Increment(task.Points),
 		},
 	})
@@ -117,6 +117,37 @@ func FinishTask(ctx *gin.Context) {
 		{
 			Path:  "Done",
 			Value: true,
+		},
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, task.TaskID)
+}
+
+func VoteTask(ctx *gin.Context) {
+	client := ctx.MustGet("firestore").(*firestore.Client)
+
+	var task models.Task
+	err := ctx.ShouldBindJSON(&task)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = client.Collection("household").Doc(task.HouseholdID).Get(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Household does not exist"})
+		return
+	}
+
+	_, err = client.Collection("household").Doc(task.HouseholdID).Collection("task").Doc(task.TaskID).Update(ctx, []firestore.Update{
+		{
+			Path:  "Votes",
+			Value: task.Votes,
 		},
 	})
 	if err != nil {

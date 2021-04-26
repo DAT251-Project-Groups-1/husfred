@@ -17,6 +17,7 @@ class _FeedTileState extends State<FeedTile> {
   Widget build(BuildContext context) {
     var authService = context.read<AuthService>();
     bool hasVoted = (widget.task.votes).contains(authService.user!.uid);
+    print(widget.task.votes);
     return Card(
         child: ListTile(
             title: Text(widget.task.name),
@@ -25,7 +26,6 @@ class _FeedTileState extends State<FeedTile> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  // Visual hack, obv fix when adding backend
                   (widget.task.votes.length).toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
