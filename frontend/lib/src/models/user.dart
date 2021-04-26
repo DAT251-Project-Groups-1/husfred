@@ -4,7 +4,7 @@ class User {
   String householdId = "";
   int points = 0;
 
-  User({required this.userID, required this.name, required this.householdId});
+  User({required this.name, required this.householdId});
 
   Map toJson() => {'name': name, 'householdId': householdId};
 
