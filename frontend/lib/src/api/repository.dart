@@ -58,7 +58,6 @@ class Repository {
           'Authorization': 'Bearer ${idTokenResult.token}'
         },
         body: json.encode(user));
-    print(res.body);
 
     return json.decode(res.body);
   }
@@ -117,9 +116,8 @@ class Repository {
     fa.IdTokenResult idTokenResult =
         await auth.currentUser!.getIdTokenResult(true);
     final http.Response res = await http.delete(
-      Uri.https('$API_URL', 'user/'),
+      Uri.https('$API_URL', 'user'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${idTokenResult.token}'
       },
     );
