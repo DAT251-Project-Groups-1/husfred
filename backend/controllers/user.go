@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"firebase.google.com/go/v4/auth"
 	"fmt"
-	"google.golang.org/api/iterator"
 	"net/http"
+
+	"firebase.google.com/go/v4/auth"
+	"google.golang.org/api/iterator"
 
 	"cloud.google.com/go/firestore"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
@@ -59,7 +60,7 @@ func GetUsersInHousehold(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		user.UserId = doc.Ref.ID
+		user.UserID = doc.Ref.ID
 		users = append(users, user)
 	}
 	ctx.JSON(http.StatusOK, users)
