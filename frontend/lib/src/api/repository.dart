@@ -58,7 +58,6 @@ class Repository {
           'Authorization': 'Bearer ${idTokenResult.token}'
         },
         body: json.encode(user));
-    print(res.body);
 
     return json.decode(res.body);
   }
