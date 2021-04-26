@@ -2,18 +2,19 @@ package main
 
 import (
 	"bytes"
-	"cloud.google.com/go/firestore"
 	"context"
 	"encoding/json"
-	firebase "firebase.google.com/go/v4"
-	"firebase.google.com/go/v4/auth"
 	"fmt"
-	"github.com/DAT251-Project-Groups-1/husfred/config"
-	"github.com/DAT251-Project-Groups-1/husfred/services"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+
+	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/auth"
+	"github.com/DAT251-Project-Groups-1/husfred/config"
+	"github.com/DAT251-Project-Groups-1/husfred/services"
+	"github.com/gin-gonic/gin"
 
 	"github.com/DAT251-Project-Groups-1/husfred/models"
 )
@@ -57,9 +58,9 @@ func CreateTask(client *firestore.Client, hh *firestore.DocumentRef, user *fires
 	return ref, err
 }
 
-func CreateFirebaseAuthUser(auth *auth.Client) string {
+func CreateFirebaseAuthUser(auth *auth.Client, uid string) string {
 	ctx := context.Background()
-	token, _ := auth.CustomToken(ctx, "testUser")
+	token, _ := auth.CustomToken(ctx, uid)
 	var body = map[string]interface{}{
 		"token":             token,
 		"returnSecureToken": true,

@@ -39,6 +39,10 @@ class ApiService with ChangeNotifier {
     await _repository.postUser(user);
   }
 
+  void deleteUser() async {
+    await _repository.deleteUser();
+  }
+
   void postTask(Task task) async {
     var taskID = await _repository.postTask(task);
     task.taskID = taskID;

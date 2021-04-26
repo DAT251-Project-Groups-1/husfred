@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"firebase.google.com/go/v4/auth"
 	"fmt"
-	"google.golang.org/api/iterator"
 	"net/http"
+
+	"firebase.google.com/go/v4/auth"
+	"google.golang.org/api/iterator"
 
 	"cloud.google.com/go/firestore"
 	"github.com/DAT251-Project-Groups-1/husfred/models"
@@ -62,4 +63,16 @@ func GetUsersInHousehold(ctx *gin.Context) {
 		users = append(users, user)
 	}
 	ctx.JSON(http.StatusOK, users)
+}
+
+func DeleteUser(ctx *gin.Context) {
+	client := ctx.MustGet("firestore").(*firestore.Client)
+	userRecord := ctx.MustGet("user").(*auth.UserRecord)
+
+	_, err := client.Collection("user").Doc(userRecord.UID).Delete(ctx)
+	if err != nil {
+		// Handle any errors in an appropriate way, such as returning them.
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 }

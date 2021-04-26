@@ -102,4 +102,18 @@ class Repository {
       return [];
     }
   }
+
+  Future<http.Response> deleteUser() async {
+    fa.IdTokenResult idTokenResult =
+        await auth.currentUser!.getIdTokenResult(true);
+    final http.Response res = await http.delete(
+      Uri.https('$API_URL', 'user/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${idTokenResult.token}'
+      },
+    );
+
+    return res;
+  }
 }
