@@ -20,7 +20,7 @@ class LeaveButton extends StatelessWidget {
 }
 
 showAlertDialog(BuildContext context) {
-  ApiService apiService = context.watch<ApiService>();
+  ApiService apiService = context.read<ApiService>();
   // set up the buttons
   Widget cancelButton = TextButton(
     child: Text("Cancel"),
@@ -33,6 +33,7 @@ showAlertDialog(BuildContext context) {
     onPressed: () async {
       apiService.deleteUser();
       context.read<AuthService>().changeState(AuthState.Initialized);
+      Navigator.of(context).pop();
     },
   );
 
