@@ -36,7 +36,7 @@ class _JoinHouseholdState extends State<JoinHousehold> {
       ),
       body: Center(
         child: Container(
-          width: 200.0,
+          width: 250.0,
           child: Column(
             children: [
               Padding(
@@ -50,7 +50,7 @@ class _JoinHouseholdState extends State<JoinHousehold> {
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 child: ConstrainedBox(
                   constraints: BoxConstraints.tightFor(
-                    width: 200,
+                    width: 250,
                     height: 40,
                   ),
                   child: ElevatedButton(

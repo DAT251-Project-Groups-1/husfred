@@ -1,4 +1,6 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/src/api/api_service.dart';
@@ -19,7 +21,8 @@ class RegisterUser extends StatefulWidget {
 class _RegisterUserState extends State<RegisterUser> {
   late TextEditingController _controller;
   final _formKey = GlobalKey<FormState>();
-  FilePickerResult? file;
+  final picker = ImagePicker();
+  PickedFile? _pickedFile;
 
   @override
   void initState() {
@@ -45,7 +48,7 @@ class _RegisterUserState extends State<RegisterUser> {
       ),
       body: Center(
         child: Container(
-          width: 200.0,
+          width: 250.0,
           child: Column(
             children: [
               Padding(
@@ -63,25 +66,31 @@ class _RegisterUserState extends State<RegisterUser> {
               ),
               ListTile(
                 title: Text(
-                  file == null ? "Last opp fil" : file!.files.single.name!,
+                  _pickedFile == null ? "Pick file" : "Change avatar",
                 ),
-                trailing: Icon(Icons.file_upload),
+                trailing: _pickedFile == null
+                    ? Icon(Icons.file_upload)
+                    : (kIsWeb
+                        ? Image.network(_pickedFile!.path)
+                        : Image.file(File(_pickedFile!.path))),
                 onTap: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(type: FileType.image);
+                  final pickedFile =
+                      await picker.getImage(source: ImageSource.gallery);
 
-                  if (result != null) {
-                    setState(() {
-                      file = result;
-                    });
-                  }
+                  setState(() {
+                    if (pickedFile != null) {
+                      _pickedFile = pickedFile;
+                    } else {
+                      print('No image selected.');
+                    }
+                  });
                 },
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 child: ConstrainedBox(
                   constraints: BoxConstraints.tightFor(
-                    width: 200,
+                    width: 250,
                     height: 40,
                   ),
                   child: ElevatedButton(
@@ -89,35 +98,23 @@ class _RegisterUserState extends State<RegisterUser> {
                       primary: Colors.green,
                       onPrimary: Colors.white,
                     ),
-                    // When the user presses the button, call on the backend to create a new
-                    // user with the specified name and assigned to specified household ID
                     onPressed: () async {
-                      if (_formKey.currentState!.validate() && file != null) {
-                        try {
-                          storageService.uploadAvatar(
-                            widget.household,
-                            authService.user!.uid,
-                            file!.files.single.bytes!,
-                            file!.files.single.name!,
-                          );
-                          apiService.postUser(
-                            User(
-                              name: _controller.text,
-                              householdId: widget.household,
-                            ),
-                          );
-                        } catch (e) {
-                          print(e);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("En feil oppstod $e"),
-                            ),
-                          );
-                          return;
-                        }
-                        context
-                            .read<AuthService>()
-                            .changeState(AuthState.SignedIn);
+                      if (_formKey.currentState!.validate() &&
+                          _pickedFile != null) {
+                        final fileAsBytes = await _pickedFile!.readAsBytes();
+                        await storageService.uploadAvatar(
+                          widget.household,
+                          authService.user!.uid,
+                          fileAsBytes,
+                        );
+                        apiService.postUser(
+                          User(
+                            name: _controller.text,
+                            householdId: widget.household,
+                          ),
+                        );
+
+                        authService.changeState(AuthState.SignedIn);
                       }
                     },
                     child: Text("Register"),

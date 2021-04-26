@@ -6,12 +6,11 @@ class StorageService {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<void> uploadAvatar(
-      String householdId, String uid, Uint8List file, String name) async {
-    await storage.ref("$householdId/$uid/$name").putData(file);
+      String householdId, String uid, Uint8List fileAsBytes) async {
+    await storage.ref("$householdId/$uid").putData(fileAsBytes);
   }
 
   Future<String?> getAvatar(String householdId, String uid) async {
-    ListResult listResult = await storage.ref("$householdId/$uid").list(ListOptions(maxResults: 1));
-    return await listResult.items.first.getDownloadURL();
+    return await storage.ref("$householdId/$uid").getDownloadURL();
   }
 }

@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(
-                  width: 200,
+                  width: 250,
                   height: 40,
                 ),
                 child: ElevatedButton(
@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(
-                  width: 200,
+                  width: 250,
                   height: 40,
                 ),
                 child: ElevatedButton(
