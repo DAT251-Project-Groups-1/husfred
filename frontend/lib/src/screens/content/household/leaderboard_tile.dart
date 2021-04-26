@@ -13,14 +13,13 @@ class LeaderboardTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StorageService storageService = context.watch<StorageService>();
-    AuthService authService = context.watch<AuthService>();
     return Card(
       child: ListTile(
         title: Text(user.name),
         leading: FutureBuilder<String?>(
           future: storageService.getAvatar(
             ApiService.householdID,
-            authService.user!.uid,
+            user.userID,
           ),
           builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
