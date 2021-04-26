@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/screens/content/household/leaderboard_list.dart';
 import 'package:frontend/src/screens/content/household/leavebutton.dart';
+import 'package:frontend/src/screens/content/household/link_button.dart';
 import 'package:provider/provider.dart';
 
 class Household extends StatelessWidget {
@@ -21,9 +22,8 @@ class Household extends StatelessWidget {
               },
             ),
           ),
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              child: LeaveButton()),
+          LinkButton(),
+          LeaveButton(),
         ],
       ),
     );
