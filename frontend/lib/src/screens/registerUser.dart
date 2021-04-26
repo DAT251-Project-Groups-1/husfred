@@ -94,7 +94,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate() && file != null) {
                         try {
-                          await storageService.uploadAvatar(
+                          storageService.uploadAvatar(
                             widget.household,
                             authService.user!.uid,
                             file!.files.single.bytes!,
