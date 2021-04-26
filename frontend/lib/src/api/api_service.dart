@@ -56,6 +56,11 @@ class ApiService with ChangeNotifier {
     notifyListeners();
   }
 
+  void voteTask(Task task) async {
+    await _repository.voteTask(task);
+    notifyListeners();
+  }
+
   getTasks(bool done, [DateTime? from, DateTime? to]) async {
     var tasks = await _repository.getTasks(householdID, done, from, to);
     if (done) {

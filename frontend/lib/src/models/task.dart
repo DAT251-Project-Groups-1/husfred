@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Task {
   String taskID = "";
   String name = "";
@@ -35,7 +37,7 @@ class Task {
     householdID = json["HouseholdID"];
     date = DateTime.fromMillisecondsSinceEpoch(json["Date"]);
     done = json["Done"];
-    //votes = List<String>.from(json["Votes"]);
+    votes = json["Votes"] != null ? List.from(json["Votes"]) : [];
     points = json['Points'];
   }
 }

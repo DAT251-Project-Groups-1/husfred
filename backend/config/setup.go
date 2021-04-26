@@ -32,6 +32,7 @@ func SetupRouter(auth *auth.Client, firestore *firestore.Client) *gin.Engine {
 	task.POST("/new", controllers.NewTask)
 	task.POST("/finish", controllers.FinishTask)
 	task.GET("/:householdID", controllers.GetTasks)
+	task.PUT("/vote", controllers.VoteTask)
 
 	return router
 }

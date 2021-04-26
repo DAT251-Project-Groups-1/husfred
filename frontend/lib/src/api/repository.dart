@@ -40,6 +40,15 @@ class Repository {
     return json.decode(res.body);
   }
 
+  Future<String> voteTask(Task task) async {
+    var res = await http.put(
+      Uri.https('$API_URL', '/task/vote'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(task),
+    );
+    return json.decode(res.body);
+  }
+
   Future<String> postUser(User user) async {
     fa.IdTokenResult idTokenResult =
         await auth.currentUser!.getIdTokenResult(true);

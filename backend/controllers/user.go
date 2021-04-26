@@ -60,6 +60,7 @@ func GetUsersInHousehold(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		user.UserID = doc.Ref.ID
 		users = append(users, user)
 	}
 	ctx.JSON(http.StatusOK, users)

@@ -1,4 +1,5 @@
 class User {
+  String userID = "";
   String name = "";
   String householdId = "";
   int points = 0;
@@ -11,5 +12,6 @@ class User {
     name = json["Name"];
     householdId = json["HouseholdID"];
     points = json["Points"];
+    userID = json["UserID"];
   }
 }
