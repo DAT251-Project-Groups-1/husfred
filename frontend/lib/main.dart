@@ -1,4 +1,6 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:async';
+
+import 'package:firebase_cloud_messaging_interop/firebase_cloud_messaging_interop.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/api/api_service.dart';
 import 'package:frontend/src/api/auth_service.dart';
@@ -8,35 +10,22 @@ import 'package:provider/provider.dart';
 
 String? inviteID;
 
-void main() {
+Future<void> main() async {
   inviteID = Uri.base.queryParameters["id"];
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*FirebaseMessaging messaging = FirebaseMessaging.instance;
+  /// Direct init
+  final FirebaseMessagingWeb fcm = FirebaseMessagingWeb(
+      publicVapidKey:
+          "BEciicoTpLTFVR2rcT1YX5h5QCZVSsW3ZBDAWaQ-WQzbr_OcF7WWV6rA0Fr4t32SECWxTa5cGr_93gFdGNxqmW8");
 
-  messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
+  final bool didGivePermissions = await fcm.requestNotificationPermissions();
 
-  messaging.getToken(
-    vapidKey:
-        "BEciicoTpLTFVR2rcT1YX5h5QCZVSsW3ZBDAWaQ-WQzbr_OcF7WWV6rA0Fr4t32SECWxTa5cGr_93gFdGNxqmW8",
-  );
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });*/
+  if (didGivePermissions) {
+    fcm.onMessage((Map? messagePayload) {
+      print(messagePayload);
+    });
+  }
 
   runApp(
     MultiProvider(
